@@ -52,6 +52,7 @@ public class ArenaSerialization {
 		for (Arena arena : Arena.ARENA_MAP.values()){
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			config.addDefault(arena.getName(), gson.toJson(arena));
+			System.out.printf("Сеарелізовано арену %s%n", arena.getName());
 		}
 		config.options().copyDefaults();
 	}
