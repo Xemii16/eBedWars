@@ -1,6 +1,5 @@
 package com.yecraft.engine;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -10,9 +9,8 @@ import com.yecraft.world.LocalGameMap;
 
 import org.bukkit.Location;
 import org.bukkit.boss.BossBar;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-public class Arena implements ConfigurationSerializable {
+public class Arena {
 	public static Map<String, Arena> ARENA_MAP = new HashMap<>();
 	private final String name;
 	private Integer playersOnTeam;
@@ -122,10 +120,5 @@ public class Arena implements ConfigurationSerializable {
 
 	public void setLastPlayerLocation(Map<UUID, Location> lastPlayerLocation) {
 		this.lastPlayerLocation = lastPlayerLocation;
-	}
-
-	@Override
-	public Map<String, Object> serialize() {
-		return null;
 	}
 }

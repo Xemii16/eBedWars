@@ -6,7 +6,7 @@ import com.yecraft.commands.JoinCommand;
 import com.yecraft.commands.OpenShop;
 import com.yecraft.commands.TeamCommands;
 import com.yecraft.completers.ArenaTabCompleter;
-import com.yecraft.config.ArenaSaver;
+import com.yecraft.config.ArenaSerialization;
 
 import com.yecraft.listeners.*;
 import org.bukkit.Bukkit;
@@ -50,9 +50,9 @@ public class BedWars extends JavaPlugin{
 
 		NPCLib.getInstance().registerPlugin(this);
 
-		ArenaSaver.setup();
-		ArenaSaver.get().options().copyDefaults(true);
-		ArenaSaver.saveFile();
+		ArenaSerialization.deserialize();
+		ArenaSerialization.get().options().copyDefaults(true);
+		ArenaSerialization.saveFile();
 
 	}
 
