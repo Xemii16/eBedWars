@@ -1,0 +1,20 @@
+main: com.yecraft.bedwars.BedWars
+api-version: 1.18
+name: BedWars
+author: Xemii16
+softdepend:
+  - PlayerNPC
+  - NPCLib
+website: yecraft.com
+version: 1.0
+commands:
+  open:
+    description: "open"
+  arena:
+    description: "arena"
+  team:
+    description: "team"
+  join:
+    description: "create"
+  create:
+    description: "create"
