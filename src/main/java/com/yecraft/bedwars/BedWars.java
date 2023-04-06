@@ -51,13 +51,11 @@ public class BedWars extends JavaPlugin{
 		NPCLib.getInstance().registerPlugin(this);
 
 		ArenaSerialization.deserialize();
-		ArenaSerialization.get().options().copyDefaults(true);
-		ArenaSerialization.saveFile();
-
 	}
 
 	@Override
 	public void onDisable(){
+		ArenaSerialization.serialize();
 	}
 
 	public static BedWars getInstance(){
