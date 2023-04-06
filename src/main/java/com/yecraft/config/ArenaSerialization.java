@@ -1,22 +1,20 @@
 package com.yecraft.config;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.yecraft.bedwars.BedWars;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import com.yecraft.engine.Arena;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ArenaSerialization {
 	private static File file;
-	private static FileConfiguration config;
-
-	private static void setup(){
+	
+	private static File setup(){
 		file = new File(Bukkit.getWorldContainer().getParentFile() + File.separator + "arenas");
 		if (!file.exists()){
 			try {
@@ -25,35 +23,36 @@ public class ArenaSerialization {
 				e.printStackTrace();
 			}
 		}
-		config = YamlConfiguration.loadConfiguration(file);
-	}
-
-	public static FileConfiguration get(){
-		return config;
-	}
-
-	public static void saveFile(){
-		try {
-			config.save(file);
-		} catch (IOException e){
-			e.printStackTrace();
-		}
-	}
-
-	public static void reload(){
-		config = YamlConfiguration.loadConfiguration(file);
+		return file;
 	}
 
 	public static void deserialize(){
-		setup();
+		File arenasFolder = setup();
+		if (arenasFolder.list().length == 0) return;
+		for (File file : arenasFolder.listFiles()){
+			try {
+				FileInputStream fileInputStream = new FileInputStream(file);
+				ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+				Arena arena = (Arena) objectInputStream.readObject();
+				Arena.ARENA_MAP.put(arena.getName(), arena);
+				objectInputStream.close();
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static void serialize(){
+		File arenasFolder = setup();
 		for (Arena arena : Arena.ARENA_MAP.values()){
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
-			config.addDefault(arena.getName(), gson.toJson(arena));
-			System.out.printf("Сеарелізовано арену %s%n", arena.getName());
+			try {
+				FileOutputStream fileOutputStream = new FileOutputStream(new File(arenasFolder + File.separator + arena.getName()));
+				ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+				objectOutputStream.writeObject(arena);
+				objectOutputStream.close();
+			} catch (Exception e){
+				e.printStackTrace();
+			}
 		}
-		config.options().copyDefaults();
 	}
 }
