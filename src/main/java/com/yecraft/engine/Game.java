@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Game {
+public class Game implements Serializable{
   private Map<String, Team> teams;
   private long bronzeCD;
   private long ironCD;

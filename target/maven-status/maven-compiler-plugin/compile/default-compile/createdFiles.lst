@@ -2,7 +2,6 @@ com\yecraft\commands\ArenaInfo.class
 com\yecraft\commands\TeamDelete.class
 com\yecraft\shop\MainShop.class
 com\yecraft\scoreboard\Scoreboard.class
-com\yecraft\config\Config.class
 com\yecraft\shop\SwordShop.class
 com\yecraft\listeners\DamageEvent.class
 com\yecraft\shop\BowShop.class
@@ -26,6 +25,7 @@ com\yecraft\shop\FoodShop.class
 com\yecraft\shop\PotionShop.class
 com\yecraft\database\Database.class
 com\yecraft\engine\Arena.class
+com\yecraft\listeners\GameStatusEvent$2.class
 com\yecraft\listeners\BedBreakEvent.class
 com\yecraft\shop\ToolsShop.class
 com\yecraft\world\LocalGameMap.class
@@ -33,6 +33,7 @@ com\yecraft\shop\ShopUtilities$PriceType.class
 com\yecraft\engine\Team.class
 com\yecraft\event\GameChangeStatusEvent.class
 com\yecraft\listeners\ServerLeaveEvent.class
+com\yecraft\config\ArenaSerialization.class
 com\yecraft\commands\ArenaDelete.class
 com\yecraft\commands\TeamCreate.class
 com\yecraft\inventory\JoinInventory.class

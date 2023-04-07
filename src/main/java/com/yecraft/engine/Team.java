@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.md_5.bungee.api.ChatColor;
 
-public class Team {
+public class Team implements Serializable {
 	private String name;
 	private ChatColor color;
 	private Material bed;

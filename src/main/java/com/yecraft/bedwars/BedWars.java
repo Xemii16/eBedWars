@@ -15,6 +15,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import dev.sergiferry.playernpc.api.NPCLib;
 import mc.obliviate.inventory.InventoryAPI;
 
+import java.io.File;
+
 
 public class BedWars extends JavaPlugin{
 
@@ -50,11 +52,17 @@ public class BedWars extends JavaPlugin{
 
 		NPCLib.getInstance().registerPlugin(this);
 
+		if (!(new File(getDataFolder().getParentFile() + "/arenas").exists())){
+			new File(getDataFolder().getParentFile() + "/arenas").mkdir();
+		}
 		ArenaSerialization.deserialize();
 	}
 
 	@Override
 	public void onDisable(){
+		if (!(new File(getDataFolder().getParentFile() + "/arenas").exists())){
+			new File(getDataFolder().getParentFile() + "/arenas").mkdir();
+		}
 		ArenaSerialization.serialize();
 	}
 

@@ -1,5 +1,7 @@
 package com.yecraft.engine;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -7,10 +9,13 @@ import java.util.UUID;
 
 import com.yecraft.world.LocalGameMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
-public class Arena {
+public class Arena implements Serializable {
 	public static Map<String, Arena> ARENA_MAP = new HashMap<>();
 	private final String name;
 	private Integer playersOnTeam;
@@ -20,11 +25,11 @@ public class Arena {
 	private Game game;
 	private Boolean status;
 	private LocalGameMap map;
-	private BossBar bossBar;
+	private transient BossBar bossBar;
 	private Set<UUID> players;
 	private Map<UUID, Location> lastPlayerLocation;
-	
-	public Arena (String name, Integer playersOnTeam, Integer numberTeams, Game game, boolean status, LocalGameMap map, BossBar bossBar, Set<UUID> players, Map<UUID, Location> lastPlayerLocation){
+
+	public Arena (String name, Integer playersOnTeam, Integer numberTeams, Game game, boolean status, LocalGameMap map, Set<UUID> players, Map<UUID, Location> lastPlayerLocation){
 		this.name = name;
 		this.playersOnTeam = playersOnTeam;
 		this.maxPlayers = playersOnTeam * numberTeams;
@@ -33,7 +38,7 @@ public class Arena {
 		this.game = game;
 		this.status = status;
 		this.map = map;
-		this.bossBar = bossBar;
+		this.bossBar = Bukkit.createBossBar("Очікування гравців", BarColor.BLUE, BarStyle.SOLID);
 		this.players = players;
 		this.lastPlayerLocation = lastPlayerLocation;
 	}

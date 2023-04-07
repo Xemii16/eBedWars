@@ -2,13 +2,14 @@ package com.yecraft.world;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import com.yecraft.bedwars.BedWars;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
-public class LocalGameMap implements GameMap{
+public class LocalGameMap implements GameMap, Serializable {
 	
 	private final File sourceWorldFolder;
 	private File activeWorldFolder;
