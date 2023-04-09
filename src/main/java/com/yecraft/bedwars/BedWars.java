@@ -16,14 +16,17 @@ import dev.sergiferry.playernpc.api.NPCLib;
 import mc.obliviate.inventory.InventoryAPI;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 
 public class BedWars extends JavaPlugin{
 
 	private static BedWars bedWars;
+	private static Logger logger;
 
 	public BedWars(){
 		bedWars = this;
+		logger = Logger.getLogger(BedWars.class.getName());
 	}
 
 	@Override
