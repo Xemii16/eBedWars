@@ -30,7 +30,7 @@ public class ArenaTeleport implements SubCommand{
 			}
 			if (args[2].equalsIgnoreCase("hub")){
 				player.teleport(Bukkit.getWorld("world").getSpawnLocation());
-				player.sendMessage(String.format("Вас телепортовано до світу %s", arena.getGame().getMap().getWorld().getName()));
+				player.sendMessage("Вас телепортовано до світу");
 			}
 		}
 	}

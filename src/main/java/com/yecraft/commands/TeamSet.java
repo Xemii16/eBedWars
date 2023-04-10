@@ -39,51 +39,67 @@ public class TeamSet implements SubCommand{
 					case "white":
 						team.setBed(Material.WHITE_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: Білий");
+						break;
 					case "orange":
 						team.setBed(Material.ORANGE_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: Оранжевий");
+						break;
 					case "light_blue":
 						team.setBed(Material.LIGHT_BLUE_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: СВІТЛО СИНІЙ");
+						break;
 					case "magenta":
 						team.setBed(Material.MAGENTA_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: МАЛИНОВИЙ");
+						break;
 						case "yellow":
 						team.setBed(Material.YELLOW_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: ЖОВТИЙ");
+						break;
 					case "lime":
 						team.setBed(Material.LIME_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: ЛАЙМОВИЙ");
+						break;
 					case "pink":
 						team.setBed(Material.PINK_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: РОЖЕВИЙ");
+						break;
 					case "gray":
 						team.setBed(Material.GRAY_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: СІРИЙ");
+						break;
 					case "light_gray":
 						team.setBed(Material.LIGHT_GRAY_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: СВІТЛО-СІРИЙ");
+						break;
 					case "cyan":
 						team.setBed(Material.CYAN_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: БЛАКИТНИЙ");
+						break;
 					case "purple":
 						team.setBed(Material.PURPLE_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: ФІОЛЕТОВИЙ");
+						break;
 					case "blue":
 						team.setBed(Material.BLUE_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: СИНІЙ");
+						break;
 					case "brown":
 						team.setBed(Material.BROWN_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: КОРИЧНЕВИЙ");
+						break;
 					case "green":
 						team.setBed(Material.GREEN_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: ЗЕЛЕНИЙ");
+						break;
 					case "red":
 						team.setBed(Material.RED_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: ЧЕРВОНИЙ");
+						break;
 					case "black":
 						team.setBed(Material.BLACK_BED);
 						player.sendMessage("Для арени " + arena.getName() +  "(команда " + team.getName() + "), встановлено колір ліжка: ЧОРНИЙ");
+						break;
 				}
 			}
 			if (args[3].equalsIgnoreCase("color")){

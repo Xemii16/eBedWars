@@ -19,7 +19,7 @@ import mc.obliviate.inventory.Icon;
 
 public class JoinInventory extends Gui{
 	public JoinInventory (Player player){
-		super (player, "join_gui", "Арени", 54);
+		super (player, "join_gui", "Арени", 6);
 	}
 	
 	@Override
@@ -30,6 +30,7 @@ public class JoinInventory extends Gui{
 				addItem(i, new Icon(Material.EMERALD_BLOCK).onClick(e -> {
 					String name = e.getCurrentItem().getItemMeta().getDisplayName();
 					join(Arena.ARENA_MAP.get(name), (Player) e.getWhoClicked());
+					player.teleport(arena.getSpawn());
 				}).setName(arena.getName()));
 			}
 		}

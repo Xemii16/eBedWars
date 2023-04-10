@@ -60,6 +60,15 @@ public class BedWars extends JavaPlugin{
 			new File(getDataFolder().getParentFile() + "/arenas").mkdir();
 		}
 		ArenaSerialization.deserialize();
+
+		for (Arena arena : Arena.ARENA_MAP.values()){
+			if (arena.getMap().getWorld() == null){
+				arena.getMap().load();
+			}
+			if(arena.getGame().getMap().getWorld() == null){
+				arena.getGame().getMap().load();
+			}
+		}
 	}
 
 	@Override

@@ -53,13 +53,11 @@ public class ArenaSet implements SubCommand{
 				player.sendMessage("Встановлено інтервал спавну лазуриту " + Long.parseLong(args[3])/20 + "с");
 			}
 			if (args[2].equalsIgnoreCase("source_game")){
-				arena.getGame().setMap(new LocalGameMap(args[3], false));
-				arena.getGame().getMap().load();
+				arena.getGame().setMap(new LocalGameMap(args[3], true));
 				player.sendMessage("Світ приєднаний до арени " + args[1]);
 			}
 			if (args[2].equalsIgnoreCase("source_lobby")){
-				arena.setMap(new LocalGameMap(args[3], false));
-				arena.getMap().load();
+				arena.setMap(new LocalGameMap(args[3], true));
 				player.sendMessage("Світ приєднаний до арени " + args[1]);
 			}
 			if (args[2].equalsIgnoreCase("number_teams")){
@@ -87,6 +85,10 @@ public class ArenaSet implements SubCommand{
 			}
 			if (args[2].equalsIgnoreCase("location")){
 				switch (args[3]){
+					case "spawn":
+						arena.setSpawn(player.getLocation());
+						player.sendMessage("Локація спавну встановлена");
+						break;
 					case "bronze":
 						arena.getGame().addBronze(player.getLocation());
 						player.sendMessage("Локація бронзи встановлена");
