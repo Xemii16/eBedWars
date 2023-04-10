@@ -8,6 +8,7 @@ import com.yecraft.commands.TeamCommands;
 import com.yecraft.completers.ArenaTabCompleter;
 import com.yecraft.config.ArenaSerialization;
 
+import com.yecraft.engine.Arena;
 import com.yecraft.listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -65,6 +66,15 @@ public class BedWars extends JavaPlugin{
 	public void onDisable(){
 		if (!(new File(getDataFolder().getParentFile() + "/arenas").exists())){
 			new File(getDataFolder().getParentFile() + "/arenas").mkdir();
+		}
+
+		for (Arena arena : Arena.ARENA_MAP.values()){
+			if (arena.getMap().getWorld() != null){
+				arena.getMap().unload();
+			}
+			if(arena.getGame().getMap().getWorld() != null){
+				arena.getGame().getMap().unload();
+			}
 		}
 		ArenaSerialization.serialize();
 	}

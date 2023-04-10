@@ -8,7 +8,6 @@ com\yecraft\shop\BowShop.class
 com\yecraft\shop\UpgradeShop.class
 com\yecraft\completers\ArenaTabCompleter.class
 com\yecraft\commands\ArenaGet.class
-com\yecraft\messages\ArenaMessages$1.class
 com\yecraft\listeners\InventoryEvent.class
 com\yecraft\engine\Game.class
 com\yecraft\listeners\GameStatusEvent.class
@@ -54,6 +53,7 @@ com\yecraft\listeners\PortalEvent.class
 com\yecraft\inventory\TeamInventory.class
 com\yecraft\listeners\CommandSendEvent.class
 com\yecraft\shop\ShopUtilities$1.class
+com\yecraft\completers\TeamCompleter.class
 com\yecraft\commands\CreateNPC.class
 com\yecraft\scheduler\CountRunnable.class
 com\yecraft\commands\ArenaCreate.class

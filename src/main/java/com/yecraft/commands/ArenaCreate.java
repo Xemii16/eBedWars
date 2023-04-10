@@ -25,8 +25,8 @@ public class ArenaCreate implements SubCommand{
 		if (args[0].equalsIgnoreCase("create") & args.length == 2){
 			String name = args[1];
 			if (!Arena.ARENA_MAP.containsKey(name)){
-				Game game = new Game(new HashMap<String, Team>(), 20L, 20L, 20L, 20L, 20L, null, null, new ArrayList<Location>(), new ArrayList<Location>(), new ArrayList<Location>(), new ArrayList<Location>(), new ArrayList<Location>());
-				Arena arena = new Arena(name, 0, 0, game, false, new LocalGameMap("test",true), new HashSet<>(), new HashMap<UUID, Location>());
+				Game game = new Game(new HashMap<String, Team>(), 20L, 20L, 20L, 20L, 20L, null, new LocalGameMap("", false), new ArrayList<Location>(), new ArrayList<Location>(), new ArrayList<Location>(), new ArrayList<Location>(), new ArrayList<Location>());
+				Arena arena = new Arena(name, 0, 0, game, false, new LocalGameMap("",false), new HashSet<>(), new HashMap<UUID, Location>());
 				Arena.ARENA_MAP.put(name, arena);
 				player.sendMessage("Арена " + name + " успішно створена");
 			} else {

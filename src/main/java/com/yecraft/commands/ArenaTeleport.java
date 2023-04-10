@@ -2,7 +2,11 @@ package com.yecraft.commands;
 
 import com.yecraft.engine.Arena;
 
+import lombok.NonNull;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.Objects;
 
 public class ArenaTeleport implements SubCommand{
 
@@ -22,6 +26,10 @@ public class ArenaTeleport implements SubCommand{
 			}
 			if (args[2].equalsIgnoreCase("game")){
 				player.teleport(arena.getGame().getMap().getWorld().getSpawnLocation());
+				player.sendMessage(String.format("Вас телепортовано до світу %s", arena.getGame().getMap().getWorld().getName()));
+			}
+			if (args[2].equalsIgnoreCase("hub")){
+				player.teleport(Bukkit.getWorld("world").getSpawnLocation());
 				player.sendMessage(String.format("Вас телепортовано до світу %s", arena.getGame().getMap().getWorld().getName()));
 			}
 		}

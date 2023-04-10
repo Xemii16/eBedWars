@@ -15,7 +15,7 @@ public class ArenaSet implements SubCommand{
 	@Override
 	public void init(String[] args, Player player) {
 		if (args[0].equalsIgnoreCase("set")){
-			if (args.length == 4) return;
+			if (!(args.length == 4)) return;
 			Arena arena = null;
 			if (Arena.ARENA_MAP.containsKey(args[1])){
 				arena = Arena.ARENA_MAP.get(args[1]);
@@ -53,22 +53,14 @@ public class ArenaSet implements SubCommand{
 				player.sendMessage("Встановлено інтервал спавну лазуриту " + Long.parseLong(args[3])/20 + "с");
 			}
 			if (args[2].equalsIgnoreCase("source_game")){
-				File dataFolder = new File (BedWars.getInstance().getDataFolder().getAbsolutePath() + File.separator + args[3]);
-				if (dataFolder.exists()){
-					arena.getGame().setMap(new LocalGameMap(args[3], true));
-					player.sendMessage("Світ приєднаний до арени " + args[1]);
-				} else {
-					player.sendMessage("Світу не існує :/");
-				}
+				arena.getGame().setMap(new LocalGameMap(args[3], false));
+				arena.getGame().getMap().load();
+				player.sendMessage("Світ приєднаний до арени " + args[1]);
 			}
 			if (args[2].equalsIgnoreCase("source_lobby")){
-				File dataFolder = new File (BedWars.getInstance().getDataFolder().getAbsolutePath() + File.separator + args[3]);
-				if (dataFolder.exists()){
-					arena.setMap(new LocalGameMap(args[3], true));
-					player.sendMessage("Світ приєднаний до арени " + args[1]);
-				} else {
-					player.sendMessage("Світу не існує :/");
-				}
+				arena.setMap(new LocalGameMap(args[3], false));
+				arena.getMap().load();
+				player.sendMessage("Світ приєднаний до арени " + args[1]);
 			}
 			if (args[2].equalsIgnoreCase("number_teams")){
 				arena.setNumberTeams(Integer.parseInt(args[3]));
