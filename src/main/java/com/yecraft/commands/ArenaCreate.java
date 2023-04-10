@@ -1,6 +1,5 @@
 package com.yecraft.commands;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,11 +10,7 @@ import com.yecraft.engine.Game;
 import com.yecraft.engine.Team;
 
 import com.yecraft.world.LocalGameMap;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
 public class ArenaCreate implements SubCommand{
@@ -26,7 +21,7 @@ public class ArenaCreate implements SubCommand{
 			String name = args[1];
 			if (!Arena.ARENA_MAP.containsKey(name)){
 				Game game = new Game(new HashMap<String, Team>(), 20L, 20L, 20L, 20L, 20L, null, new LocalGameMap("", false), new ArrayList<Location>(), new ArrayList<Location>(), new ArrayList<Location>(), new ArrayList<Location>(), new ArrayList<Location>());
-				Arena arena = new Arena(name, 0, 0, game, false, new LocalGameMap("",false), new HashSet<>(), new HashMap<UUID, Location>(), new ArrayList<>());
+				Arena arena = new Arena(name, 0, 0, game, false, new LocalGameMap("",false), new HashSet<>(), new HashMap<UUID, Location>());
 				Arena.ARENA_MAP.put(name, arena);
 				player.sendMessage("Арена " + name + " успішно створена");
 			} else {

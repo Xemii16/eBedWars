@@ -9,6 +9,7 @@ import com.yecraft.engine.Team;
 import com.yecraft.event.GameChangeStatusEvent;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -18,23 +19,31 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.persistence.PersistentDataType;
 
+import javax.annotation.Nonnull;
+import javax.naming.NamingEnumeration;
+
 public class DamageEvent implements Listener{
-	
+
 	@EventHandler
 	public void killPlayer(EntityDamageByEntityEvent e){
 		Player damager;
-		Player player;
+ 		Player player;
 		Arena arena;
 		if (e.getEntity().getPersistentDataContainer().has(new NamespacedKey(BedWars.getInstance(), "arena"), PersistentDataType.STRING)){
 			arena = Arena.ARENA_MAP.get(e.getEntity().getPersistentDataContainer().get(new NamespacedKey(BedWars.getInstance(), "arena"), PersistentDataType.STRING));
 		} else return;
+
 		if (e.getDamager().getType().equals(EntityType.PLAYER)){
 			damager = (Player) e.getDamager();
 		} else return;
 		if (e.getEntityType().equals(EntityType.PLAYER)){
 			player = (Player) e.getEntity();
 		} else return;
-		
+
+		if (ChatColor.getLastColors(player.getDisplayName()).equals(ChatColor.getLastColors(player.getDisplayName()))){
+			e.setCancelled(true);
+		}
+
 		if (player.getHealth() <= 0){
 			e.setCancelled(true);
 			for (UUID uuid : arena.getPlayers()){
@@ -66,5 +75,5 @@ public class DamageEvent implements Listener{
 			}
 		}
 	}
-	
+
 }
