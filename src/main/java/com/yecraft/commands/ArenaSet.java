@@ -29,7 +29,7 @@ public class ArenaSet implements SubCommand{
 					arena.setPlayersOnTeam(number);
 					player.sendMessage("Встановлено к-сть гравців в команді " + args[3]);
 				} catch (NumberFormatException e){
-					player.sendMessage("Цифру введи, клоун");
+					player.sendMessage("Цифру введи, клоун :)");
 				}
 			}
 			if (args[2].equalsIgnoreCase("bronze_cd")){
