@@ -2,10 +2,7 @@ package com.yecraft.engine;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import com.yecraft.world.LocalGameMap;
 
@@ -29,7 +26,9 @@ public class Arena implements Serializable {
 	private Set<UUID> players;
 	private Map<UUID, Location> lastPlayerLocation;
 
-	public Arena (String name, Integer playersOnTeam, Integer numberTeams, Game game, boolean status, LocalGameMap map, Set<UUID> players, Map<UUID, Location> lastPlayerLocation){
+	private List<UUID> spectators;
+
+	public Arena (String name, Integer playersOnTeam, Integer numberTeams, Game game, boolean status, LocalGameMap map, Set<UUID> players, Map<UUID, Location> lastPlayerLocation, List<UUID> spectators){
 		this.name = name;
 		this.playersOnTeam = playersOnTeam;
 		this.maxPlayers = playersOnTeam * numberTeams;
@@ -41,6 +40,18 @@ public class Arena implements Serializable {
 		this.bossBar = Bukkit.createBossBar("Очікування гравців", BarColor.BLUE, BarStyle.SOLID);
 		this.players = players;
 		this.lastPlayerLocation = lastPlayerLocation;
+		this.spectators = spectators;
+	}
+
+	public void addSpectators(UUID uuid){
+		spectators.add(uuid);
+	}
+	public List<UUID> getSpectators() {
+		return spectators;
+	}
+
+	public void setSpectators(List<UUID> spectators) {
+		this.spectators = spectators;
 	}
 
 	public String getName() {
