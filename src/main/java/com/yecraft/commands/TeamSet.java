@@ -28,14 +28,12 @@ public class TeamSet implements SubCommand{
 				player.sendMessage("Успішно встановлено шерсть команди");
 			}
 			if(args[3].equalsIgnoreCase("spawn")){
-				switch (args[4]){
-					case "this":
-						team.setSpawn(player.getLocation());
-						player.sendMessage("Встановлено локацію команди" + team.getName() + " для арени " + arena.getName());
-					default:
-						player.sendMessage("Бот, тр хрень написав");
-				}
-			}
+                if (args[4].equals("this")) {
+                    team.setSpawn(player.getLocation());
+                    player.sendMessage("Встановлено локацію команди" + team.getName() + " для арени " + arena.getName());
+                }
+                player.sendMessage("Бот, тр хрень написав");
+            }
 			if (args[3].equalsIgnoreCase("material")){
 				switch (args[4]){
 					case "white":

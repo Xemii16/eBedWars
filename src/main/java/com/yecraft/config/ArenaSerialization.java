@@ -25,7 +25,7 @@ public class ArenaSerialization {
 	}
 
 	public static boolean deserialize(){
-		File arenasFolder = file = new File(BedWars.getInstance().getDataFolder().getParentFile() + "/arenas");
+		File arenasFolder = new File(BedWars.getInstance().getDataFolder().getParentFile() + "/arenas");
 		if (arenasFolder.list() == null) return false;
 		for (File file : arenasFolder.listFiles()){
 			try {

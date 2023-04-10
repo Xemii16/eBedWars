@@ -74,7 +74,7 @@ public class TeamCompleter implements TabCompleter{
 				);
 				}
 				if (args[3].equalsIgnoreCase("color")){
-					return Arrays.asList(ChatColor.class.getEnumConstants().toString());
+					return Collections.singletonList(ChatColor.class.getEnumConstants().toString());
 				}
 			}
 		}

@@ -23,9 +23,7 @@ public class CommandSendEvent implements Listener{
 					arena.getPlayers().remove(uuidEvent);
 					arena.getLastPlayerLocation().remove(uuidEvent);
 					for (Team team : arena.getGame().getTeams().values()){
-						if (team.getPlayers().contains(uuidEvent)){
-							team.getPlayers().remove(uuidEvent);
-						}
+                        team.getPlayers().remove(uuidEvent);
 					}
 				}
 			}
