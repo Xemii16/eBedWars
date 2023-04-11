@@ -7,5 +7,6 @@ public enum GameStatus {
 	START,
 	ACTIVE,
 	WIN,
-	RESTART
+	RESTART,
+	DRAW
 }

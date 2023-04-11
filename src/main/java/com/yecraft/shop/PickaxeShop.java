@@ -14,7 +14,7 @@ import mc.obliviate.inventory.Icon;
 
 public class PickaxeShop extends Gui{
 	public PickaxeShop(Player player){
-		super(player, "pickaxe_shop", "Інструменти", 54);
+		super(player, "pickaxe_shop", "Інструменти", 9);
 	}
 	
 	@Override

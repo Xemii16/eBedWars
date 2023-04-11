@@ -14,7 +14,7 @@ import mc.obliviate.inventory.Icon;
 
 public class UpgradeShop extends Gui{
 	public UpgradeShop(Player player){
-		super (player, "upgrade_shop", "Покращення", 54);
+		super (player, "upgrade_shop", "Покращення", 9);
 	}
 	
 	@Override

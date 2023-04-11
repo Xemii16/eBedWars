@@ -27,6 +27,7 @@ public class Arena implements Serializable {
 
 	private Location spawn;
 
+
 	public Arena (String name, Integer playersOnTeam, Integer numberTeams, Game game, boolean status, LocalGameMap map, Set<UUID> players, Map<UUID, Location> lastPlayerLocation, Location spawn){
 		this.name = name;
 		this.playersOnTeam = playersOnTeam;

@@ -14,7 +14,7 @@ import mc.obliviate.inventory.Icon;
 
 public class FoodShop extends Gui{
 	public FoodShop(Player player){
-		super (player, "food_shop", "Їжа", 54);
+		super (player, "food_shop", "Їжа", 9);
 	}
 	
 	@Override

@@ -32,6 +32,7 @@ public class ArenaSet implements SubCommand{
 					player.sendMessage("Цифру введи, клоун :)");
 				}
 			}
+
 			if (args[2].equalsIgnoreCase("bronze_cd")){
 				arena.getGame().setBronzeCD(Long.parseLong(args[3]));
 				player.sendMessage("Встановлено інтервал спавну бронзи " + Long.parseLong(args[3])/20 + "с");
@@ -85,6 +86,9 @@ public class ArenaSet implements SubCommand{
 			}
 			if (args[2].equalsIgnoreCase("location")){
 				switch (args[3]){
+                    case "npc":
+                        arena.getGame().addNpc(player.getLocation());
+						player.sendMessage("Локація продавця встановлена");
 					case "spawn":
 						arena.setSpawn(player.getLocation());
 						player.sendMessage("Локація спавну встановлена");

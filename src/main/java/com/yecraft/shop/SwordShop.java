@@ -14,7 +14,7 @@ import mc.obliviate.inventory.Icon;
 
 public class SwordShop extends Gui{
 	public SwordShop(Player player){
-		super (player, "sword_gui", "Мечі", 54);
+		super (player, "sword_gui", "Мечі", 9);
 	}
 	
 	@Override

@@ -22,7 +22,7 @@ import com.yecraft.engine.Team;
 
 public class BlocksShop extends Gui{
 	public BlocksShop(Player player){
-		super(player, "blocks_shop", "Блоки", 54);
+		super(player, "blocks_shop", "Блоки", 9);
 	}
 	
 	@Override

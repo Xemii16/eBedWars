@@ -22,7 +22,7 @@ import com.yecraft.shop.ToolsShop;
 
 public class MainShop extends Gui {
 	public MainShop(Player player){
-		super (player, "main_shop", "Магазин", 54);
+		super (player, "main_shop", "Магазин", 9);
 	}
 	
 	@Override

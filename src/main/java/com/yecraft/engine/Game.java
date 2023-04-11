@@ -26,27 +26,9 @@ public class Game implements Serializable{
   private List<Location> gold;
   private List<Location> diamond;
   private List<Location> lapis;
-  
-  public void addBronze(Location location){
-  	bronze.add(location);
-  }
-  public void addIron(Location location){
-  	iron.add(location);
-  }
-  public void addGold(Location location){
-  	gold.add(location);
-  }
-  public void addDiamond(Location location){
-  	diamond.add(location);
-  }
-  public void addLapis(Location location){
-  	lapis.add(location);
-  }
-  public void addTeam(String name, Team team){
-  	teams.put(name, team);
-  }
+  private List<Location> npc;
 
-  public Game(Map<String, Team> teams, long bronzeCD, long ironCD, long goldCD, long diamondCD, long lapisCD, GameStatus gameStatus, LocalGameMap map, List<Location> bronze, List<Location> iron, List<Location> gold, List<Location> diamond, List<Location> lapis) {
+  public Game(Map<String, Team> teams, long bronzeCD, long ironCD, long goldCD, long diamondCD, long lapisCD, GameStatus gameStatus, LocalGameMap map, List<Location> bronze, List<Location> iron, List<Location> gold, List<Location> diamond, List<Location> lapis, List<Location> npc) {
     this.teams = teams;
     this.bronzeCD = bronzeCD;
     this.ironCD = ironCD;
@@ -60,6 +42,38 @@ public class Game implements Serializable{
     this.gold = gold;
     this.diamond = diamond;
     this.lapis = lapis;
+    this.npc = npc;
+  }
+
+  public void addBronze(Location location){
+    this.bronze.add(location);
+  }
+  public void addIron(Location location){
+    this.iron.add(location);
+  }
+  public void addGold(Location location){
+    this.gold.add(location);
+  }
+  public void addDiamond(Location location){
+    this.diamond.add(location);
+  }
+  public void addLapis(Location location){
+    this.lapis.add(location);
+  }
+  public void addTeam(String name, Team team){
+    this.teams.put(name, team);
+  }
+
+  public void addNpc(Location location){
+    this.npc.add(location);
+  }
+
+  public List<Location> getNpc() {
+    return npc;
+  }
+
+  public void setNpc(List<Location> npc) {
+    this.npc = npc;
   }
 
   public Map<String, Team> getTeams() {

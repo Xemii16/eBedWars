@@ -72,55 +72,61 @@
 	<repositories>
     <!-- This adds the Spigot Maven repository to the build -->
     <repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
-</repository>
-<repository>
-        <id>spigot-repo</id>
-        <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-    </repository>
+    	<id>jitpack.io</id>
+    	<url>https://jitpack.io</url>
+	</repository>
     <repository>
-    <id>ranull-repo-external</id>
-    <url>https://repo.ranull.com/maven/external/</url>
-</repository>
+    	<id>ranull-repo-external</id>
+    	<url>https://repo.ranull.com/maven/external/</url>
+	</repository>
+	<repository>
+		<id>nms-repo</id>
+		<url>https://repo.codemc.io/repository/nms/</url>
+	</repository>
 </repositories>
-	
-	<dependencies>
+<dependencies>
 	<dependency>
     <groupId>dev.sergiferry</groupId>
     <artifactId>playernpc</artifactId>
     <version>2023.4</version>
     <scope>provided</scope>
 </dependency>
+
 	<dependency>
-        <groupId>org.spigotmc</groupId>
-        <artifactId>spigot-api</artifactId>
-        <version>1.18.2-R0.1-SNAPSHOT</version>
-        <scope>provided</scope>
-    </dependency>
+		<groupId>org.spigotmc</groupId>
+		<artifactId>spigot-api</artifactId>
+		<version>1.18.2-R0.1-SNAPSHOT</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.spigotmc</groupId>
+		<artifactId>spigot</artifactId>
+		<version>1.18.2-R0.1-SNAPSHOT</version>
+		<scope>provided</scope>
+	</dependency>
     <dependency>
     	<groupId>com.github.hamza-cskn.obliviate-invs</groupId>
     	<artifactId>core</artifactId>
     	<version>4.1.11</version>
-</dependency>
-<dependency>
+	</dependency>
+	<dependency>
     	<groupId>com.github.hamza-cskn.obliviate-invs</groupId>
     	<artifactId>pagination</artifactId>
     	<version>4.1.11</version>
-</dependency>
+	</dependency>
     <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-<dependency>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
-    <version>1.18.24</version>
-    <scope>provided</scope>
-</dependency>
-<dependency>
-  <groupId>org.spigotmc</groupId>
-  <artifactId>plugin-annotations</artifactId>
-  <version>1.2.3-SNAPSHOT</version>
-  <scope>provided</scope>
-</dependency>
+	<dependency>
+    	<groupId>org.projectlombok</groupId>
+    	<artifactId>lombok</artifactId>
+    	<version>1.18.24</version>
+    	<scope>provided</scope>
+	</dependency>
+	<dependency>
+  	<groupId>org.spigotmc</groupId>
+  	<artifactId>plugin-annotations</artifactId>
+  	<version>1.2.3-SNAPSHOT</version>
+  	<scope>provided</scope>
+	</dependency>
 	<dependency>
         	<groupId>mysql</groupId>
         	<artifactId>mysql-connector-java</artifactId>

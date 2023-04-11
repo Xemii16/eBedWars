@@ -32,7 +32,7 @@ public class LocalGameMap implements GameMap, Serializable {
 		Bukkit.getWorldContainer().getParentFile(), 
 		sourceWorldFolder.getName() + "_active_" + System.currentTimeMillis()
 		);
-		
+
 		try {
 			FileUtils.copy(sourceWorldFolder, activeWorldFolder);
 		} catch (IOException e){
@@ -40,9 +40,14 @@ public class LocalGameMap implements GameMap, Serializable {
 			e.printStackTrace();
 			return false;
 		}
-		this.bukkitWorld = Bukkit.createWorld(
-		new WorldCreator(activeWorldFolder.getName())
-		);
+		Runnable task = () -> {
+			this.bukkitWorld = Bukkit.createWorld(
+					new WorldCreator(activeWorldFolder.getName())
+			);
+		};
+		Thread thread = new Thread(task);
+		thread.setName("WorldLoader");
+		thread.start();
 		
 		if (bukkitWorld !=null) this.bukkitWorld.setAutoSave(false);
 		return isLoaded();
