@@ -6,6 +6,7 @@ import com.yecraft.commands.JoinCommand;
 import com.yecraft.commands.OpenShop;
 import com.yecraft.commands.TeamCommands;
 import com.yecraft.completers.ArenaTabCompleter;
+import com.yecraft.completers.TeamCompleter;
 import com.yecraft.config.ArenaSerialization;
 
 import com.yecraft.engine.Arena;
@@ -41,6 +42,7 @@ public class BedWars extends JavaPlugin{
 		getCommand("open").setExecutor(new OpenShop());
 		getCommand("create").setExecutor(new CreateNPC());
 		getCommand("arena").setTabCompleter(new ArenaTabCompleter());
+		getCommand("team").setTabCompleter(new TeamCompleter());
 		InventoryAPI invAPI = new InventoryAPI(this);
 		invAPI.init();
 

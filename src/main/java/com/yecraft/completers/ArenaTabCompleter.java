@@ -31,11 +31,14 @@ public class ArenaTabCompleter implements TabCompleter{
 			if (args[0].equalsIgnoreCase("set")){
 				if (args[2].equalsIgnoreCase("location")){
 					return List.of(
-					"bronze",
-					"iron",
-					"gold",
-					"diamond",
-					"lapis"
+							"bronze",
+							"iron",
+							"gold",
+							"diamond",
+							"lapis",
+							"spawn",
+							"npc"
+
 					);
 				}
 				if (args[2].equalsIgnoreCase("status")){

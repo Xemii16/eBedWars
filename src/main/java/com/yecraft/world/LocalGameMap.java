@@ -40,14 +40,9 @@ public class LocalGameMap implements GameMap, Serializable {
 			e.printStackTrace();
 			return false;
 		}
-		Runnable task = () -> {
-			this.bukkitWorld = Bukkit.createWorld(
-					new WorldCreator(activeWorldFolder.getName())
-			);
-		};
-		Thread thread = new Thread(task);
-		thread.setName("WorldLoader");
-		thread.start();
+		this.bukkitWorld = Bukkit.createWorld(
+				new WorldCreator(activeWorldFolder.getName())
+		);
 		
 		if (bukkitWorld !=null) this.bukkitWorld.setAutoSave(false);
 		return isLoaded();

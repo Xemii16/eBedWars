@@ -22,13 +22,13 @@ import com.yecraft.shop.ToolsShop;
 
 public class MainShop extends Gui {
 	public MainShop(Player player){
-		super (player, "main_shop", "Магазин", 9);
+		super (player, "main_shop", "Магазин", 6);
 	}
 	
 	@Override
 	public void onOpen(InventoryOpenEvent inventory){
-		fillRow(new Icon(Material.ORANGE_STAINED_GLASS_PANE).setName(""), 2);
-		LinkedList<Icon> icons = (LinkedList<Icon>) List.of(
+		fillRow(new Icon(Material.ORANGE_STAINED_GLASS_PANE).setName(""), 1);
+		List<Icon> icons = List.of(
 		new Icon(Material.SANDSTONE).setName("Блоки").onClick(e -> {
 			new BlocksShop((Player) e.getWhoClicked()).open();
 		}),
@@ -57,8 +57,8 @@ public class MainShop extends Gui {
 		new Icon(Material.BEACON).setName("Покращення").onClick(e -> {
 			new UpgradeShop((Player) e.getWhoClicked()).open();
 		}));
+		int i = 0;
 		for (Icon icon : icons){
-			int i = 0;
 			addItem(i, icon);
 			i++;
 		}
