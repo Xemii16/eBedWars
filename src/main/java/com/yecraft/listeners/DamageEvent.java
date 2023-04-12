@@ -1,78 +1,210 @@
 package com.yecraft.listeners;
 
-import java.util.UUID;
-
 import com.yecraft.bedwars.BedWars;
 import com.yecraft.engine.Arena;
+import com.yecraft.engine.Game;
+
 import com.yecraft.engine.GameStatus;
 import com.yecraft.engine.Team;
 import com.yecraft.event.GameChangeStatusEvent;
-
+import com.yecraft.scheduler.DeathRunnable;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import javax.annotation.Nonnull;
-import javax.naming.NamingEnumeration;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 public class DamageEvent implements Listener{
 
+	List<String> messages = List.of(
+			"%s нещасно помер від синдрому Собчука переданого гравцем %s",
+			"%s помер від гравця %s",
+			"%s бившись до останнього, був переможений гравцем %s",
+			"Проклинаючи, гравець %s помер від братчика %s",
+			"%s помер від дирявої бібізяни %s",
+			"Гравця %s так сильно обійняв %s, що той помер :с"
+	);
+
+	public String getRandomDeathMessage(){
+		Random random = new Random();
+		return messages.get(random.nextInt(messages.size()));
+	}
+
 	@EventHandler
-	public void killPlayer(EntityDamageByEntityEvent e){
-		Player damager;
- 		Player player;
-		Arena arena;
-		if (e.getEntity().getPersistentDataContainer().has(new NamespacedKey(BedWars.getInstance(), "arena"), PersistentDataType.STRING)){
-			arena = Arena.ARENA_MAP.get(e.getEntity().getPersistentDataContainer().get(new NamespacedKey(BedWars.getInstance(), "arena"), PersistentDataType.STRING));
-		} else return;
-
-		if (e.getDamager().getType().equals(EntityType.PLAYER)){
-			damager = (Player) e.getDamager();
-		} else return;
-		if (e.getEntityType().equals(EntityType.PLAYER)){
-			player = (Player) e.getEntity();
-		} else return;
-
-		if (ChatColor.getLastColors(player.getDisplayName()).equals(ChatColor.getLastColors(player.getDisplayName()))){
-			e.setCancelled(true);
-		}
-
-		if (player.getHealth() <= 0){
-			e.setCancelled(true);
-			for (UUID uuid : arena.getPlayers()){
-				Player players = Bukkit.getPlayer(uuid);
-				players.sendMessage("Гравець " + player.getDisplayName() + "вмер через " + damager.getDisplayName());
-			}
-			if (player.getPersistentDataContainer().get(new NamespacedKey(BedWars.getInstance(), "bed"), PersistentDataType.STRING).equalsIgnoreCase("true")){
-				Team team = Arena.ARENA_MAP.get(arena).getGame().getTeams().get(player.getPersistentDataContainer().get(new NamespacedKey(BedWars.getInstance(), "team"), PersistentDataType.STRING));
-				player.setHealth(20);
-				player.teleport(team.getSpawn());
-			} else if (player.getPersistentDataContainer().get(new NamespacedKey(BedWars.getInstance(), "bed"), PersistentDataType.STRING).equalsIgnoreCase("false")) {
-				player.getPersistentDataContainer().remove(new NamespacedKey(BedWars.getInstance(), "team"));
-				player.getPersistentDataContainer().remove(new NamespacedKey(BedWars.getInstance(), "bed"));
-				Team team = arena.getGame().getTeams().get(player.getPersistentDataContainer().get(new NamespacedKey(BedWars.getInstance(), "team"), PersistentDataType.STRING));
+	public void damageEvent(EntityDamageEvent e){
+		if (e.getCause() == EntityDamageEvent.DamageCause.VOID){
+			Player player = (Player) e.getEntity();
+			PersistentDataContainer playerData = player.getPersistentDataContainer();
+			NamespacedKey arenaKey = new NamespacedKey(BedWars.getInstance(), "arena");
+			NamespacedKey teamKey = new NamespacedKey(BedWars.getInstance(), "team");
+			NamespacedKey bedKey = new NamespacedKey(BedWars.getInstance(), "bed");
+			if (!(playerData.has(arenaKey, PersistentDataType.STRING))) return;
+			Arena arena = Arena.ARENA_MAP.get(playerData.get(arenaKey, PersistentDataType.STRING));
+			if (!(playerData.has(teamKey, PersistentDataType.STRING))) return;
+			Team team = arena.getGame().getTeams().get(playerData.get(teamKey, PersistentDataType.STRING));
+			if (!(playerData.has(bedKey, PersistentDataType.STRING))) return;
+			if (!(Boolean.parseBoolean(playerData.get(bedKey, PersistentDataType.STRING)))){
+				playerData.remove(teamKey);
+				playerData.remove(bedKey);
 				team.getPlayers().remove(player.getUniqueId());
-				arena.getPlayers().remove(player.getUniqueId());
+				int liveTeams = 0;
+				for (Team teams : arena.getGame().getTeams().values()) {
+					if (teams.getPlayers().size() > 0){
+						liveTeams++;
+					}
+				}
+				if (liveTeams == 1){
+					arena.getGame().setGameStatus(GameStatus.WIN);
+					Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
+					return;
+				}
 				player.setGameMode(GameMode.SPECTATOR);
-				player.sendMessage("Ти слилась бебрик, удачі в житті");
+				player.getInventory().clear();
+				player.teleport(arena.getGame().getDeathSpawn());
+				ItemStack compass = new ItemStack(Material.COMPASS);
+				ItemMeta metaCompass = compass.getItemMeta();
+				metaCompass.setDisplayName("Слідкувати за гравцем");
+				compass.setItemMeta(metaCompass);
+				ItemStack torch = new ItemStack(Material.COMPASS);
+				ItemMeta metaTorch = compass.getItemMeta();
+				metaTorch.setDisplayName("Слідкувати за гравцем");
+				torch.setItemMeta(metaCompass);
+				player.getInventory().addItem(compass);
+				player.getInventory().addItem(torch);
+				for (UUID uuid : arena.getPlayers()){
+					Player players = Bukkit.getPlayer(uuid);
+					assert players != null;
+					players.sendMessage(String.format("Гравець %s помер впавши в бескінечність", player.getDisplayName()));
+				}
+				return;
 			}
-			int liveTeams = 0;
-			for (Team team : arena.getGame().getTeams().values()){
-				if (team.getPlayers().isEmpty()){
-					liveTeams++;
+			arena.getPlayers().stream().map(Bukkit::getPlayer).forEach(players -> {
+				assert players != null;
+				players.sendMessage(String.format("Гравець %s помер", player.getDisplayName()));
+			});
+			player.teleport(arena.getGame().getDeathSpawn());
+			player.setGameMode(GameMode.SPECTATOR);
+			new Thread(() -> {
+				DeathRunnable runnable = new DeathRunnable(player, 5, arena.getGame().getDeathSpawn());
+				runnable.runTaskTimer(BedWars.getInstance(), 0L, 20L);
+			}).start();
+		}
+	}
+
+	@EventHandler (priority = EventPriority.HIGHEST)
+	public void damageByEntity(EntityDamageByEntityEvent e){
+		Player player;
+		Player damager;
+		Entity entity = e.getEntity();
+
+		PersistentDataContainer playerData = entity.getPersistentDataContainer();
+		PersistentDataContainer damagerData = e.getDamager().getPersistentDataContainer();
+
+		NamespacedKey arenaKey = new NamespacedKey(BedWars.getInstance(), "arena");
+		NamespacedKey teamKey = new NamespacedKey(BedWars.getInstance(), "team");
+		NamespacedKey bedKey = new NamespacedKey(BedWars.getInstance(), "bed");
+
+		Arena arena = Arena.ARENA_MAP.get(playerData.get(arenaKey, PersistentDataType.STRING));
+		Game game = arena.getGame();
+
+		if (entity instanceof Player & e.getDamager() instanceof Player){
+			player = (Player) entity;
+			damager = (Player) e.getDamager();
+			if (arena.getGame().getGameStatus() == GameStatus.WAIT || arena.getGame().getGameStatus() == GameStatus.DRAW || arena.getGame().getGameStatus() == GameStatus.WIN){
+				e.setCancelled(true);
+			}
+			if (playerData.has(teamKey, PersistentDataType.STRING) & damagerData.has(teamKey, PersistentDataType.STRING )){
+				Team playerTeam = arena.getGame().getTeams().get(playerData.get(teamKey, PersistentDataType.STRING));
+				Team damagerTeam = arena.getGame().getTeams().get(damagerData.get(teamKey, PersistentDataType.STRING));
+				if (playerTeam.equals(damagerTeam)){
+					e.setCancelled(true);
+				} else {
+					if (!(player.getHealth() == 0)) return;
+					if (!(Boolean.parseBoolean(playerData.get(bedKey, PersistentDataType.STRING)))){
+						playerData.remove(teamKey);
+						playerData.remove(bedKey);
+						playerTeam.getPlayers().remove(player.getUniqueId());
+						int liveTeams = 0;
+						for (Team teams : arena.getGame().getTeams().values()) {
+							if (teams.getPlayers().size() > 0){
+								liveTeams++;
+							}
+						}
+						if (liveTeams == 1){
+							arena.getGame().setGameStatus(GameStatus.WIN);
+							Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
+							return;
+						}
+						player.setGameMode(GameMode.SPECTATOR);
+						player.getInventory().clear();
+						player.teleport(arena.getGame().getDeathSpawn());
+						ItemStack compass = new ItemStack(Material.COMPASS);
+						ItemMeta metaCompass = compass.getItemMeta();
+						metaCompass.setDisplayName("Слідкувати за гравцем");
+						compass.setItemMeta(metaCompass);
+						ItemStack torch = new ItemStack(Material.COMPASS);
+						ItemMeta metaTorch = compass.getItemMeta();
+						metaTorch.setDisplayName("Слідкувати за гравцем");
+						torch.setItemMeta(metaCompass);
+						player.getInventory().addItem(compass);
+						player.getInventory().addItem(torch);
+						for (UUID uuid : arena.getPlayers()){
+							Player players = Bukkit.getPlayer(uuid);
+							assert players != null;
+							players.sendMessage(String.format("Гравець %s помер впавши в бескінечність", player.getDisplayName()));
+						}
+						return;
+					}
+					e.setCancelled(true);
+					for (UUID uuid : arena.getPlayers()){
+						Player players = Bukkit.getPlayer(uuid);
+						assert players != null;
+						players.sendMessage(String.format(getRandomDeathMessage(), player.getDisplayName(), damager.getDisplayName()));
+					}
+					player.teleport(game.getDeathSpawn());
+					player.setGameMode(GameMode.SPECTATOR);
+					new Thread(() -> {
+						DeathRunnable runnable = new DeathRunnable(player, 5, game.getDeathSpawn());
+						runnable.runTaskTimer(BedWars.getInstance(), 0L, 20L);
+					}).start();
 				}
 			}
-			if (liveTeams <= 1){
-				arena.getGame().setGameStatus(GameStatus.WIN);
-				Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
+		} else if (entity instanceof Player){
+			player = (Player) entity;
+			if (arena.getGame().getGameStatus() == GameStatus.WAIT || arena.getGame().getGameStatus() == GameStatus.DRAW || arena.getGame().getGameStatus() == GameStatus.WIN){
+				e.setCancelled(true);
 			}
+			if (playerData.has(teamKey, PersistentDataType.STRING)){
+				if (!(player.getHealth() == 0)) return;
+				e.setCancelled(true);
+				for (UUID uuid : arena.getPlayers()){
+					Player players = Bukkit.getPlayer(uuid);
+					assert players != null;
+					players.sendMessage(String.format("Гравець %s помер", player.getDisplayName()));
+				}
+				player.teleport(game.getDeathSpawn());
+				player.setGameMode(GameMode.SPECTATOR);
+				new Thread(() -> {
+					DeathRunnable runnable = new DeathRunnable(player, 5, game.getDeathSpawn());
+					runnable.runTaskTimer(BedWars.getInstance(), 0L, 20L);
+				}).start();
+			} else return;
 		}
 	}
 

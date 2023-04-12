@@ -28,7 +28,7 @@ public class Arena implements Serializable {
 	private Location spawn;
 
 
-	public Arena (String name, Integer playersOnTeam, Integer numberTeams, Game game, boolean status, LocalGameMap map, Set<UUID> players, Map<UUID, Location> lastPlayerLocation, Location spawn){
+	public Arena (String name, Integer playersOnTeam, Integer numberTeams, Game game, boolean status, LocalGameMap map, Location spawn){
 		this.name = name;
 		this.playersOnTeam = playersOnTeam;
 		this.maxPlayers = playersOnTeam * numberTeams;
@@ -38,8 +38,8 @@ public class Arena implements Serializable {
 		this.status = status;
 		this.map = map;
 		this.bossBar = Bukkit.createBossBar("Очікування гравців", BarColor.BLUE, BarStyle.SOLID);
-		this.players = players;
-		this.lastPlayerLocation = lastPlayerLocation;
+		this.players = new HashSet<>();
+		this.lastPlayerLocation = new HashMap<UUID, Location>();
 		this.spawn = spawn;
 	}
 

@@ -22,6 +22,13 @@ public class FoodShop extends Gui{
 		allShopIcons();
 		
 		Icon bread = new Icon(Material.BREAD).setAmount(2);
+		ShopUtilities.expose(bread, List.of(
+				new ShopUtilities.Price(ShopUtilities.PriceType.BRONZE, 1),
+				new ShopUtilities.Price(ShopUtilities.PriceType.IRON, 1),
+				new ShopUtilities.Price(ShopUtilities.PriceType.GOLD, 1),
+				new ShopUtilities.Price(ShopUtilities.PriceType.DIAMOND, 1),
+				new ShopUtilities.Price(ShopUtilities.PriceType.LAPIS, 1)
+		));
 		Icon chicken = new Icon(Material.COOKED_CHICKEN).setAmount(2);
 		Icon pork = new Icon(Material.COOKED_PORKCHOP).setAmount(2);
 		Icon cake = new Icon(Material.CAKE);

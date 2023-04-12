@@ -18,7 +18,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class Team implements Serializable {
 	private String name;
-	private ChatColor color;
+	private String color;
 	private Material bed;
 	private Material wool;
 	private Set<UUID> players;
@@ -43,11 +43,11 @@ public class Team implements Serializable {
 		this.name = name;
 	}
 
-	public ChatColor getColor() {
+	public String getColor() {
 		return color;
 	}
 
-	public void setColor(ChatColor color) {
+	public void setColor(String color) {
 		this.color = color;
 	}
 

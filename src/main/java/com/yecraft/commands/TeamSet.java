@@ -105,8 +105,8 @@ public class TeamSet implements SubCommand{
 			if (args[3].equalsIgnoreCase("color")){
 				String color = args[4];
 				try {
-					team.setColor(ChatColor.of(color));
-					player.sendMessage("Встановлено колір команди " + team.getName() + ": " + team.getColor() + "ТАКИЙ");
+					team.setColor(color);
+					player.sendMessage("Встановлено колір команди " + team.getName() + ": " + ChatColor.of(team.getColor()) + "ТАКИЙ");
 				} catch (Exception e){
 					e.printStackTrace();
 					player.sendMessage("Якусь ти хрень написав");

@@ -20,8 +20,6 @@ public class EngineCommands implements CommandExecutor{
 			arenaDelete.init(args, player);
 			ArenaGet arenaGet = new ArenaGet();
 			arenaGet.init(args, player);
-			ArenaInfo arenaInfo = new ArenaInfo();
-			arenaInfo.init(args, player);
 			ArenaTeleport arenaTeleport = new ArenaTeleport();
 			arenaTeleport.init(args, player);
 		}

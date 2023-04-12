@@ -10,25 +10,19 @@ import com.yecraft.engine.Team;
 import com.yecraft.event.GameChangeStatusEvent;
 import com.yecraft.scheduler.CountRunnable;
 import com.yecraft.scheduler.SpawnRunnable;
-import com.yecraft.scheduler.CountRunnable;
 
 import dev.sergiferry.playernpc.api.NPC;
 import dev.sergiferry.playernpc.api.NPCLib;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.Material;
+
+import net.md_5.bungee.api.ChatColor;
 
 import java.util.HashSet;
-import java.util.List;
-import java.util.concurrent.Executor;
 
 public class GameStatusEvent implements Listener {
 	@EventHandler
@@ -40,14 +34,17 @@ public class GameStatusEvent implements Listener {
 			case WAIT:
 				break;
 			case START:
-			CountRunnable cr = new CountRunnable(arena.getPlayers(), 5, "скоро");
-			cr.runTaskAsynchronously(BedWars.getInstance());
+			new Thread (() -> {
+				CountRunnable cr = new CountRunnable(arena.getPlayers(), 5, "скоро");
+				cr.runTaskTimer(BedWars.getInstance(), 0, 20);
+			}).start();
 			for (UUID uuid : arena.getPlayers()) {
 				Player player = Bukkit.getPlayer(uuid);
 				if (!(player.getPersistentDataContainer().getKeys().contains(new NamespacedKey(BedWars.getInstance(), "team")))) {
 					for (Team team : arena.getGame().getTeams().values()) {
-						if (!(team.getPlayers().size() < arena.getPlayersOnTeam())) return;
-						team.getPlayers().add(player.getUniqueId());
+						if (team.getPlayers().size() < arena.getPlayersOnTeam()){
+							team.getPlayers().add(player.getUniqueId());
+						}
 					}
 				}
 			}
@@ -113,7 +110,7 @@ public class GameStatusEvent implements Listener {
 				if (!(team.getPlayers().isEmpty())) {
 					for (UUID uuid : arena.getPlayers()) {
 						Player player = Bukkit.getPlayer(uuid);
-						player.sendMessage("Перемогла команда " + team.getColor() + team.getName());
+						player.sendMessage("Перемогла команда " + ChatColor.of(team.getColor()) + "" + team.getName());
 					}
 					for (UUID uuid : team.getPlayers()) {
 						team.getPlayers().remove(uuid);

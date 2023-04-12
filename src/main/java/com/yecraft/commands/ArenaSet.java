@@ -86,6 +86,9 @@ public class ArenaSet implements SubCommand{
 			}
 			if (args[2].equalsIgnoreCase("location")){
 				switch (args[3]){
+					case "death":
+						arena.getGame().setDeathSpawn(player.getLocation());
+						player.sendMessage("Локація смерті встановлена");
                     case "npc":
                         arena.getGame().addNpc(player.getLocation());
 						player.sendMessage("Локація продавця встановлена");

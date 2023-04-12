@@ -70,6 +70,10 @@
 		</plugins>
 	</build>
 	<repositories>
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
     <!-- This adds the Spigot Maven repository to the build -->
     <repository>
     	<id>jitpack.io</id>
@@ -110,6 +114,7 @@
     	<version>4.1.11</version>
 	</dependency>
 	<dependency>
+
     	<groupId>com.github.hamza-cskn.obliviate-invs</groupId>
     	<artifactId>pagination</artifactId>
     	<version>4.1.11</version>

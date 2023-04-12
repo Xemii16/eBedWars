@@ -27,8 +27,9 @@ public class Game implements Serializable{
   private List<Location> diamond;
   private List<Location> lapis;
   private List<Location> npc;
+  private Location deathSpawn;
 
-  public Game(Map<String, Team> teams, long bronzeCD, long ironCD, long goldCD, long diamondCD, long lapisCD, GameStatus gameStatus, LocalGameMap map, List<Location> bronze, List<Location> iron, List<Location> gold, List<Location> diamond, List<Location> lapis, List<Location> npc) {
+  public Game(Map<String, Team> teams, long bronzeCD, long ironCD, long goldCD, long diamondCD, long lapisCD, GameStatus gameStatus, LocalGameMap map, List<Location> bronze, List<Location> iron, List<Location> gold, List<Location> diamond, List<Location> lapis, List<Location> npc, Location deathSpawn) {
     this.teams = teams;
     this.bronzeCD = bronzeCD;
     this.ironCD = ironCD;
@@ -43,6 +44,7 @@ public class Game implements Serializable{
     this.diamond = diamond;
     this.lapis = lapis;
     this.npc = npc;
+    this.deathSpawn = deathSpawn;
   }
 
   public void addBronze(Location location){
@@ -62,6 +64,14 @@ public class Game implements Serializable{
   }
   public void addTeam(String name, Team team){
     this.teams.put(name, team);
+  }
+
+  public Location getDeathSpawn() {
+    return deathSpawn;
+  }
+
+  public void setDeathSpawn(Location deathSpawn) {
+    this.deathSpawn = deathSpawn;
   }
 
   public void addNpc(Location location){
