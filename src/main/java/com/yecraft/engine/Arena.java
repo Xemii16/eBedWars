@@ -32,7 +32,6 @@ public class Arena implements Serializable {
 		this.name = name;
 		this.playersOnTeam = playersOnTeam;
 		this.maxPlayers = playersOnTeam * numberTeams;
-		this.minPlayers = (playersOnTeam * numberTeams) - playersOnTeam;
 		this.numberTeams = numberTeams;
 		this.game = game;
 		this.status = status;
@@ -66,15 +65,6 @@ public class Arena implements Serializable {
 	public Integer getMaxPlayers() {
 		return maxPlayers;
 	}
-
-	public void setMaxPlayers(Integer maxPlayers) {
-		this.maxPlayers = maxPlayers;
-	}
-
-	public Integer getMinPlayers() {
-		return minPlayers;
-	}
-
 	public void setMinPlayers(Integer minPlayers) {
 		this.minPlayers = minPlayers;
 	}
@@ -89,10 +79,6 @@ public class Arena implements Serializable {
 
 	public Game getGame() {
 		return game;
-	}
-
-	public void setGame(Game game) {
-		this.game = game;
 	}
 
 	public Boolean getStatus() {

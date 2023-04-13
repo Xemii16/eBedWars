@@ -20,6 +20,7 @@ public class Game implements Serializable{
   private long diamondCD;
   private long lapisCD;
   private GameStatus gameStatus;
+  private String mapName;
   private LocalGameMap map;
   private List<Location> bronze;
   private List<Location> iron;
@@ -37,6 +38,7 @@ public class Game implements Serializable{
     this.diamondCD = diamondCD;
     this.lapisCD = lapisCD;
     this.gameStatus = gameStatus;
+    this.mapName = "";
     this.map = map;
     this.bronze = bronze;
     this.iron = iron;
@@ -64,6 +66,15 @@ public class Game implements Serializable{
   }
   public void addTeam(String name, Team team){
     this.teams.put(name, team);
+  }
+
+
+  public String getMapName() {
+    return mapName;
+  }
+
+  public void setMapName(String mapName) {
+    this.mapName = mapName;
   }
 
   public Location getDeathSpawn() {
