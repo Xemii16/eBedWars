@@ -1,4 +1,3 @@
-com\yecraft\commands\ArenaInfo.class
 com\yecraft\commands\TeamDelete.class
 com\yecraft\shop\MainShop.class
 com\yecraft\scoreboard\Scoreboard.class
@@ -8,13 +7,11 @@ com\yecraft\shop\BowShop.class
 com\yecraft\shop\UpgradeShop.class
 com\yecraft\completers\ArenaTabCompleter.class
 com\yecraft\commands\ArenaGet.class
-com\yecraft\listeners\InventoryEvent.class
 com\yecraft\engine\Game.class
 com\yecraft\listeners\GameStatusEvent.class
 com\yecraft\scheduler\SpawnRunnable.class
 com\yecraft\commands\ArenaTeleport.class
 com\yecraft\listeners\PlayerBlockInteractEvent.class
-com\yecraft\messages\ArenaMessages.class
 com\yecraft\commands\TeamSet.class
 com\yecraft\commands\TeamCommands.class
 com\yecraft\shop\BlocksShop.class
@@ -47,12 +44,12 @@ com\yecraft\shop\PickaxeShop.class
 com\yecraft\listeners\CraftEvent.class
 com\yecraft\world\FileUtils.class
 com\yecraft\shop\ShopUtilities$Price.class
-com\yecraft\messages\EMessage.class
 com\yecraft\shop\ArmorShop.class
 com\yecraft\listeners\PortalEvent.class
 com\yecraft\inventory\TeamInventory.class
 com\yecraft\listeners\CommandSendEvent.class
 com\yecraft\shop\ShopUtilities$1.class
+com\yecraft\scheduler\DeathRunnable.class
 com\yecraft\completers\TeamCompleter.class
 com\yecraft\commands\CreateNPC.class
 com\yecraft\scheduler\CountRunnable.class

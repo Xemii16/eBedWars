@@ -12,7 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class CommandSendEvent implements Listener{
+public class CommandSendEvents implements Listener{
 	@EventHandler
 	public void hubEvent(PlayerCommandPreprocessEvent e){
 		UUID uuidEvent = e.getPlayer().getUniqueId();

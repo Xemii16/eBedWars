@@ -46,14 +46,14 @@ public class BedWars extends JavaPlugin{
 		InventoryAPI invAPI = new InventoryAPI(this);
 		invAPI.init();
 
-		Bukkit.getPluginManager().registerEvents(new BedBreakEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new CommandSendEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new CraftEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new DamageEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new GameStatusEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerBlockInteractEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new PortalEvent(), this);
-		Bukkit.getPluginManager().registerEvents(new ServerLeaveEvent(), this);
+		Bukkit.getPluginManager().registerEvents(new BedBreakEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new CommandSendEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new CraftEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new DamageEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new GameStatusEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerInteractEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new PortalEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new ServerLeaveEvents(), this);
 
 		NPCLib.getInstance().registerPlugin(this);
 

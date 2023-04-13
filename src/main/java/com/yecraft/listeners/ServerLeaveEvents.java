@@ -12,7 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class ServerLeaveEvent implements Listener {
+public class ServerLeaveEvents implements Listener {
 	@EventHandler
 	public void GameLeave(PlayerQuitEvent e) {
 		UUID uuidPlayerEvent = e.getPlayer().getUniqueId();

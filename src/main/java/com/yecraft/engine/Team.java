@@ -1,46 +1,59 @@
 package com.yecraft.engine;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import net.md_5.bungee.api.ChatColor;
-
 public class Team implements Serializable {
-	private String name;
+	private String localName;
+	private String displayName;
 	private String color;
 	private Material bed;
 	private Material wool;
 	private Set<UUID> players;
 	private Location spawn;
 	private boolean isRespawnable;
+
+	private int slot;
 	
-	public Team(String name){
-		this.name = name;
-		this.color = null;
-		this.bed = null;
+	public Team(String localName){
+		this.localName = localName;
+		this.color = "#ffffff";
+		this.bed = Material.WHITE_BED;
 		this.players = new HashSet<UUID>();
 		this.spawn = null;
 		this.isRespawnable = true;
 		this.wool = Material.WHITE_WOOL;
+		this.slot = 0;
+		this.displayName = "ШАБЛОН";
 	}
 
-	public String getName() {
-		return name;
+	public String getDisplayName() {
+		return displayName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public int getSlot() {
+		return slot;
+	}
+
+	public void setSlot(int slot) {
+		this.slot = slot;
+	}
+
+	public String getLocalName() {
+		return localName;
+	}
+
+	public void setLocalName(String localName) {
+		this.localName = localName;
 	}
 
 	public String getColor() {

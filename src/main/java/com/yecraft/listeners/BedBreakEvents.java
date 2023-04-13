@@ -1,7 +1,6 @@
 package com.yecraft.listeners;
 
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -9,7 +8,6 @@ import com.yecraft.bedwars.BedWars;
 import com.yecraft.engine.Arena;
 import com.yecraft.engine.Team;
 
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -22,7 +20,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class BedBreakEvent implements Listener{
+public class BedBreakEvents implements Listener{
 
 	private static final Set<Material> BEDS = EnumSet.of(
 			Material.BLACK_BED,
@@ -69,7 +67,7 @@ public class BedBreakEvent implements Listener{
 						}
 						for (UUID uuid : arena.getPlayers()){
 							Player arenaPlayer = Bukkit.getPlayer(uuid);
-							arenaPlayer.sendMessage(String.format("Ліжко команди %s зламано гравцем %s", team.getName(), player.getDisplayName()));
+							arenaPlayer.sendMessage(String.format("Ліжко команди %s зламано гравцем %s", team.getLocalName(), player.getDisplayName()));
 						}
 					}
 				}

@@ -4,7 +4,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.PortalCreateEvent;
 
-public class PortalEvent implements Listener{
+public class PortalEvents implements Listener{
 	@EventHandler
 	public void PortalCancelEvent(PortalCreateEvent e){
 		if (!e.getEntity().isOp()){
