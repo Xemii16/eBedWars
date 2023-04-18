@@ -21,9 +21,12 @@ public class ArenaGet implements SubCommand{
 				StringBuilder sb = new StringBuilder("Гравці:");
 				for (UUID uuid : arena.getPlayers()){
 					String name = Bukkit.getPlayer(uuid).getDisplayName();
-					sb.append("\n" + name);
+					sb.append(name);
 				}
 				player.sendMessage(sb.toString());
+			}
+			if (args[2].equalsIgnoreCase("status")){
+				player.sendMessage("Статус арени " + arena.getStatus().toString() + " " + arena.getGame().getGameStatus().toString());
 			}
 		}
 	}

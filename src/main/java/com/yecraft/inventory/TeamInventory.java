@@ -16,7 +16,7 @@ import mc.obliviate.inventory.Icon;
 public class TeamInventory extends Gui{
 
 	public TeamInventory(Player player){
-		super (player, "team_inventory", "Вибір команди", 9);
+		super (player, "team_inventory", "Вибір команди", 6);
 	}
 
 	@Override

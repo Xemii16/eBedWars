@@ -16,6 +16,7 @@ import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import org.bukkit.inventory.meta.ItemMeta;
 
+
 public class JoinInventory extends Gui{
 
 	public static final String TEAM_CHOOSER = "Вибір команди";
@@ -27,25 +28,22 @@ public class JoinInventory extends Gui{
 
 	@Override
 	public void onOpen (InventoryOpenEvent event){
-		Arena.ARENA_MAP.values().stream()
-				.filter(Arena::getStatus)
-				.limit(7)
-				.forEach(arena -> {
-					Icon icon = new Icon(Material.EMERALD_BLOCK)
-							.appendLore("Гравців: " + arena.getPlayers().size())
-							.setAmount(arena.getPlayers().size())
-							.onClick(e -> {
-								if (arena.getPlayers().size() != arena.getMaxPlayers()){
-									player.teleport(arena.getSpawn());
-									addLobbyItems(player);
-									startChecker(arena);
-								} else {
-									player.sendMessage("Арена вже немає місць!");
-								}
-
-							});
-					addItem(2 ,icon);
-				});
+		int slot = 18;
+		for (Arena arena : Arena.ARENA_MAP.values()){
+			addItem(slot, new Icon(Material.EMERALD_BLOCK)
+					.setName(arena.getName())
+					.onClick(e -> {
+						if (arena.getPlayers().size() < arena.getNumberTeams() * arena.getPlayersOnTeam()){
+							e.getWhoClicked().teleport(arena.getSpawn());
+							addLobbyItems((Player) e.getWhoClicked());
+							startChecker(arena);
+						} else {
+							player.sendMessage("Арена вже немає місць!");
+						}
+					})
+			);
+			slot++;
+		}
 	}
 
 	public void addLobbyItems(Player player){
@@ -67,8 +65,8 @@ public class JoinInventory extends Gui{
 			new Thread(() -> {
 				new CountRunnable(arena.getPlayers(), 10, "").runTaskTimer(BedWars.getInstance(), 0, 20);
 				arena.getGame().setGameStatus(GameStatus.START);
-				Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
 			}).start();
+			Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
 			return;
 		}
 		if (arena.getPlayers().size() >= (arena.getMaxPlayers() - 3)){
