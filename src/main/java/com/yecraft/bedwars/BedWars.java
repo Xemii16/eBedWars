@@ -7,7 +7,7 @@ import com.yecraft.commands.OpenShop;
 import com.yecraft.commands.TeamCommands;
 import com.yecraft.completers.ArenaTabCompleter;
 import com.yecraft.completers.TeamCompleter;
-import com.yecraft.config.ArenaSerialization;
+import com.yecraft.config.ArenaStorage;
 
 import com.yecraft.engine.Arena;
 import com.yecraft.listeners.*;
@@ -60,7 +60,7 @@ public class BedWars extends JavaPlugin{
 		if (!(new File(getDataFolder().getParentFile() + "/arenas").exists())){
 			new File(getDataFolder().getParentFile() + "/arenas").mkdir();
 		}
-		ArenaSerialization.deserialize();
+		ArenaStorage.deserialize();
 
 		for (Arena arena : Arena.ARENA_MAP.values()){
 			if (arena.getMap().getWorld() == null){
@@ -86,7 +86,7 @@ public class BedWars extends JavaPlugin{
 				arena.getGame().getMap().unload();
 			}
 		}
-		ArenaSerialization.serialize();
+		ArenaStorage.serialize();
 	}
 
 	public static BedWars getInstance(){

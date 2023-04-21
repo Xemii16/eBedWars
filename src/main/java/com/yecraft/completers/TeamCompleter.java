@@ -47,7 +47,8 @@ public class TeamCompleter implements TabCompleter{
 				"wool",
 				"spawn",
 				"material",
-				"color"
+				"color",
+				"slot"
 				);
 			}
 		}
@@ -74,7 +75,7 @@ public class TeamCompleter implements TabCompleter{
 				);
 				}
 				if (args[3].equalsIgnoreCase("color")){
-					return Arrays.asList(ChatColor.values().toString());
+					return List.of("<hex-color>");
 				}
 			}
 		}

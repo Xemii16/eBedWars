@@ -37,7 +37,8 @@ public class ArenaTabCompleter implements TabCompleter{
 							"diamond",
 							"lapis",
 							"spawn",
-							"npc"
+							"npc",
+							"death"
 
 					);
 				}
@@ -82,7 +83,8 @@ public class ArenaTabCompleter implements TabCompleter{
 			if(args[0].equalsIgnoreCase("teleport")){
 				return List.of(
 				"game",
-				"lobby"
+				"lobby",
+				"hub"
 				);
 			}
 			if (args[0].equalsIgnoreCase("set")){
@@ -97,14 +99,15 @@ public class ArenaTabCompleter implements TabCompleter{
 				"source_lobby",
 				"number_teams",
 				"status",
-				"location"
+				"location",
+				"min_players"
 				);
 			}
 		}
 		
 		if (args.length == 2){
 			if (args[0].equalsIgnoreCase("create")){
-				return List.of("arena");
+				return List.of("<arena>");
 			}
 			if (args[0].equalsIgnoreCase("set")){
 				Set<String> arena = Arena.ARENA_MAP.keySet();

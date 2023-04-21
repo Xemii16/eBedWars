@@ -8,6 +8,8 @@ import com.yecraft.event.GameChangeStatusEvent;
 import com.yecraft.scheduler.CountRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 
 public class JoinInventory extends Gui{
@@ -36,7 +40,12 @@ public class JoinInventory extends Gui{
 						if (arena.getPlayers().size() < arena.getNumberTeams() * arena.getPlayersOnTeam()){
 							e.getWhoClicked().teleport(arena.getSpawn());
 							addLobbyItems((Player) e.getWhoClicked());
-							startChecker(arena);
+							arena.getBossBar().addPlayer(player);
+							player.getPersistentDataContainer().set(new NamespacedKey(BedWars.getInstance(), "arena"), PersistentDataType.STRING, arena.getName());
+							arena.getLastPlayerLocation().put(player.getUniqueId(), player.getLocation());
+							if (arena.getPlayers().size() == arena.getMinPlayers()){
+								startCounter(arena);
+							}
 						} else {
 							player.sendMessage("Арена вже немає місць!");
 						}
@@ -60,29 +69,32 @@ public class JoinInventory extends Gui{
 		player.getInventory().setItem(8, leaveButton);
 	}
 
-	public void startChecker(Arena arena){
-		if (arena.getPlayers().size() >= (arena.getMaxPlayers() - 1)){
-			new Thread(() -> {
-				new CountRunnable(arena.getPlayers(), 10, "").runTaskTimer(BedWars.getInstance(), 0, 20);
-				arena.getGame().setGameStatus(GameStatus.START);
-			}).start();
-			Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
-			return;
-		}
-		if (arena.getPlayers().size() >= (arena.getMaxPlayers() - 3)){
-			new Thread(() -> {
-				new CountRunnable(arena.getPlayers(), 15, "").runTaskTimer(BedWars.getInstance(), 0, 20);
-				arena.getGame().setGameStatus(GameStatus.START);
-				Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
-			}).start();
-			return;
-		}
-		if (arena.getPlayers().size() >= (arena.getMaxPlayers() - 6)){
-			new Thread(() -> {
-				new CountRunnable(arena.getPlayers(), 30, "").runTaskTimer(BedWars.getInstance(), 0, 20);
-				arena.getGame().setGameStatus(GameStatus.START);
-				Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
-			}).start();
-		}
+	public void startCounter(Arena arena){
+		new Thread(() -> {
+			final int[] time = {15};
+			int delay = 15;
+			while (time[0] >= 0){
+				new BukkitRunnable(){
+					@Override
+					public void run() {
+						if (time[0] == 0){
+							this.cancel();
+							arena.getGame().setGameStatus(GameStatus.START);
+							Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
+							return;
+						}
+						arena.getBossBar().setColor(BarColor.YELLOW);
+						arena.getBossBar().setTitle("Старт через " + time[0]);
+						arena.getBossBar().setProgress((double) time[0] / delay);
+						time[0]--;
+					}
+				}.runTask(BedWars.getInstance());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
 }

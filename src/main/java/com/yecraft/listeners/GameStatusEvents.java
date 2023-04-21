@@ -63,7 +63,7 @@ public class GameStatusEvents implements Listener {
 				);
 				npc.setCollidable(true);
 				npc.setText("Торговець");
-				npc.addRunPlayerCommandClickAction("/open");
+				npc.addRunPlayerCommandClickAction("open");
 			}
 			BukkitRunnable bossRunnable = new BukkitRunnable() {
 				int time = 3600;
@@ -77,6 +77,7 @@ public class GameStatusEvents implements Listener {
 					time--;
 					if (time == 0){
 						game.setGameStatus(GameStatus.DRAW);
+						Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
 					}
 				}
 			};
@@ -90,12 +91,17 @@ public class GameStatusEvents implements Listener {
 			arena.getBossBar().setColor(BarColor.GREEN);
 
 			new Thread(() -> {
-				bossRunnable.runTaskTimer(BedWars.getInstance(), 0L, 20L);
-				spawnBronze.runTaskTimer(BedWars.getInstance(), 0L, game.getBronzeCD());
-				spawnIron.runTaskTimerAsynchronously(BedWars.getInstance(), 0L, game.getIronCD());
-				spawnGold.runTaskTimerAsynchronously(BedWars.getInstance(), 0L, game.getGoldCD());
-				spawnDiamond.runTaskTimerAsynchronously(BedWars.getInstance(), 0L, game.getDiamondCD());
-				spawnLapis.runTaskTimerAsynchronously(BedWars.getInstance(), 0L, game.getLapisCD());
+				bossRunnable.runTask(BedWars.getInstance());
+				spawnIron.runTask(BedWars.getInstance());
+				spawnGold.runTask(BedWars.getInstance());
+				spawnDiamond.runTask(BedWars.getInstance());
+				spawnLapis.runTask(BedWars.getInstance());
+				spawnBronze.runTask(BedWars.getInstance());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException ex) {
+					ex.printStackTrace();
+				}
 			}).start();
 			break;
 		case WIN:

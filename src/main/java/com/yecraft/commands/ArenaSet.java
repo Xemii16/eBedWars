@@ -37,6 +37,10 @@ public class ArenaSet implements SubCommand{
 				arena.getGame().setBronzeCD(Long.parseLong(args[3]));
 				player.sendMessage("Встановлено інтервал спавну бронзи " + Long.parseLong(args[3])/20 + "с");
 			}
+			if (args[2].equalsIgnoreCase("min_players")){
+				arena.setMinPlayers(Integer.parseInt(args[3]));
+				player.sendMessage("Встановлено мін к-сть гравців " + args[3]);
+			}
 			if (args[2].equalsIgnoreCase("iron_cd")){
 				arena.getGame().setIronCD(Long.parseLong(args[3]));
 				player.sendMessage("Встановлено інтервал спавну заліза " + Long.parseLong(args[3])/20 + "с");

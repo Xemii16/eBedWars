@@ -23,7 +23,7 @@ public class CreateNPC implements CommandExecutor{
 			);
 			npc.setCollidable(true);
 			npc.setText("Торговець");
-			npc.addRunPlayerCommandClickAction("/open");
+			npc.addRunPlayerCommandClickAction("open");
 		}
 		return true;
 	}

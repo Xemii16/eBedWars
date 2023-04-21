@@ -33,7 +33,7 @@ public class TeamSet implements SubCommand{
 			}
 			if (args[3].equalsIgnoreCase("slot")){
 				team.setSlot(Integer.parseInt(args[4]));
-				player.sendMessage("Успішно встановлено шерсть команди");
+				player.sendMessage("Успішно встановлено слот команди");
 			}
 			if(args[3].equalsIgnoreCase("spawn")){
                 if (args[4].equals("this")) {
