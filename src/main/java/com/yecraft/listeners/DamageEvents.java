@@ -118,6 +118,8 @@ public class DamageEvents implements Listener{
 		NamespacedKey teamKey = new NamespacedKey(BedWars.getInstance(), "team");
 		NamespacedKey bedKey = new NamespacedKey(BedWars.getInstance(), "bed");
 
+		if (!(playerData.has(arenaKey, PersistentDataType.STRING))) return;
+
 		Arena arena = Arena.ARENA_MAP.get(playerData.get(arenaKey, PersistentDataType.STRING));
 		Game game = arena.getGame();
 

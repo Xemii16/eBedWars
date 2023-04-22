@@ -18,7 +18,7 @@ public class PlayerInteractEvents implements Listener{
 	@EventHandler
 	public void ChooseTeamClick(PlayerInteractEvent e){
 		Player player = e.getPlayer();
-		if (e.getItem().getType().isAir()) return;
+		if (e.getItem() == null) return;
 		if (e.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(JoinInventory.TEAM_CHOOSER)){
 			new TeamInventory(player).open();
 		}

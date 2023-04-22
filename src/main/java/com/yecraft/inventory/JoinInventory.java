@@ -41,6 +41,7 @@ public class JoinInventory extends Gui{
 							e.getWhoClicked().teleport(arena.getSpawn());
 							addLobbyItems((Player) e.getWhoClicked());
 							arena.getBossBar().addPlayer(player);
+							arena.getPlayers().add(player.getUniqueId());
 							player.getPersistentDataContainer().set(new NamespacedKey(BedWars.getInstance(), "arena"), PersistentDataType.STRING, arena.getName());
 							arena.getLastPlayerLocation().put(player.getUniqueId(), player.getLocation());
 							if (arena.getPlayers().size() == arena.getMinPlayers()){
@@ -73,7 +74,8 @@ public class JoinInventory extends Gui{
 		new Thread(() -> {
 			final int[] time = {15};
 			int delay = 15;
-			while (time[0] >= 0){
+			final boolean[] loop = {true};
+			while (loop[0]){
 				new BukkitRunnable(){
 					@Override
 					public void run() {
@@ -81,6 +83,7 @@ public class JoinInventory extends Gui{
 							this.cancel();
 							arena.getGame().setGameStatus(GameStatus.START);
 							Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
+							loop[0] = false;
 							return;
 						}
 						arena.getBossBar().setColor(BarColor.YELLOW);

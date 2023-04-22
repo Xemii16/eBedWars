@@ -28,7 +28,6 @@ com\yecraft\world\LocalGameMap.class
 com\yecraft\shop\ShopUtilities$PriceType.class
 com\yecraft\engine\Team.class
 com\yecraft\event\GameChangeStatusEvent.class
-com\yecraft\config\ArenaSerialization.class
 com\yecraft\commands\ArenaDelete.class
 com\yecraft\inventory\JoinInventory$1.class
 com\yecraft\listeners\GameStatusEvents$1.class
@@ -37,6 +36,7 @@ com\yecraft\inventory\JoinInventory.class
 com\yecraft\listeners\CraftEvents.class
 com\yecraft\commands\EngineCommands.class
 com\yecraft\listeners\PlayerInteractEvents.class
+com\yecraft\config\ArenaStorage.class
 com\yecraft\engine\GameStatus.class
 com\yecraft\world\GameMap.class
 com\yecraft\commands\JoinCommand.class

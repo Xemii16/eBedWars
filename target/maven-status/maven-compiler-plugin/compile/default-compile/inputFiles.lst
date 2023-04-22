@@ -1,4 +1,5 @@
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\commands\TeamDelete.java
+F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\config\ArenaStorage.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\commands\ArenaCreate.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\commands\ArenaTeleport.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\engine\Arena.java
@@ -36,7 +37,6 @@ F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\completers\TeamCompleter.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\commands\TeamSet.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\scoreboard\Scoreboard.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\commands\ArenaGet.java
-F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\config\ArenaSerialization.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\engine\GameStatus.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\commands\ArenaSet.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\shop\UpgradeShop.java

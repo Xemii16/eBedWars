@@ -1,7 +1,9 @@
 package com.yecraft.engine;
 
 
-public enum GameStatus {
+import java.io.Serializable;
+
+public enum GameStatus implements Serializable {
 	WAIT,
 	START,
 	ACTIVE,

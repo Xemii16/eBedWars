@@ -57,6 +57,10 @@ public class LocalGameMap implements GameMap, Serializable {
 		activeWorldFolder = null;
 	}
 
+	public File getSourceWorldFolder() {
+		return sourceWorldFolder;
+	}
+
 	@Override
 	public boolean restoreFromSource() {
 		unload();
