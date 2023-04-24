@@ -3,15 +3,18 @@ package com.yecraft.engine;
 import java.io.Serializable;
 import java.util.*;
 
+import com.yecraft.bedwars.BedWars;
 import com.yecraft.world.LocalGameMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
 public class Arena implements Serializable {
+    public static NamespacedKey key = new NamespacedKey(BedWars.getInstance(), "arena");
     public static Map<String, Arena> ARENA_MAP = new HashMap<>();
     private final String name;
     private Integer playersOnTeam;
@@ -39,6 +42,10 @@ public class Arena implements Serializable {
         this.players = new HashSet<>();
         this.lastPlayerLocation = new HashMap<UUID, Location>();
         this.spawn = spawn;
+    }
+
+    public static NamespacedKey getKey() {
+        return key;
     }
 
     public Location getSpawn() {

@@ -33,7 +33,9 @@ public class TeamInventory extends Gui {
                                 checkerIfPlayerInTeam(arena, player);
                                 team.getPlayers().add(player.getUniqueId());
                                 player.getPersistentDataContainer().set(teamKey, PersistentDataType.STRING, team.getLocalName());
+                                player.getPersistentDataContainer().set(bedKey, PersistentDataType.STRING, "true");
                                 player.setDisplayName(ChatColor.of(team.getColor()) + ChatColor.stripColor(player.getDisplayName()));
+                                player.sendMessage("Ви обрали команду " + ChatColor.of(team.getColor()) + team.getDisplayName());
                             });
                     addItem(team.getSlot(), icon);
                 });

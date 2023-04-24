@@ -5,7 +5,6 @@ import com.yecraft.engine.Arena;
 import com.yecraft.engine.GameStatus;
 import com.yecraft.event.GameChangeStatusEvent;
 
-import com.yecraft.scheduler.CountRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -20,6 +19,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class JoinInventory extends Gui{
 
@@ -32,28 +34,32 @@ public class JoinInventory extends Gui{
 
 	@Override
 	public void onOpen (InventoryOpenEvent event){
-		int slot = 18;
-		for (Arena arena : Arena.ARENA_MAP.values()){
-			addItem(slot, new Icon(Material.EMERALD_BLOCK)
-					.setName(arena.getName())
-					.onClick(e -> {
-						if (arena.getPlayers().size() < arena.getNumberTeams() * arena.getPlayersOnTeam()){
-							e.getWhoClicked().teleport(arena.getSpawn());
-							addLobbyItems((Player) e.getWhoClicked());
-							arena.getBossBar().addPlayer(player);
-							arena.getPlayers().add(player.getUniqueId());
-							player.getPersistentDataContainer().set(new NamespacedKey(BedWars.getInstance(), "arena"), PersistentDataType.STRING, arena.getName());
-							arena.getLastPlayerLocation().put(player.getUniqueId(), player.getLocation());
-							if (arena.getPlayers().size() == arena.getMinPlayers()){
-								startCounter(arena);
-							}
-						} else {
-							player.sendMessage("Арена вже немає місць!");
-						}
-					})
-			);
-			slot++;
-		}
+		AtomicInteger slot = new AtomicInteger(19);
+		Arena.ARENA_MAP.values().stream()
+				.filter(arena -> arena.getGame().getGameStatus() == GameStatus.WAIT)
+				.limit(7)
+				.forEach(arena -> {
+					addItem(slot.get(), new Icon(Material.EMERALD_BLOCK)
+							.setName(arena.getName())
+							.onClick(e -> {
+								if (arena.getPlayers().size() < arena.getNumberTeams() * arena.getPlayersOnTeam()){
+									e.getWhoClicked().teleport(arena.getSpawn());
+									addLobbyItems((Player) e.getWhoClicked());
+									arena.getBossBar().addPlayer(player);
+									arena.getPlayers().add(player.getUniqueId());
+									player.getPersistentDataContainer().set(new NamespacedKey(BedWars.getInstance(), "arena"), PersistentDataType.STRING, arena.getName());
+									arena.getLastPlayerLocation().put(player.getUniqueId(), player.getLocation());
+									arena.getPlayers().forEach(uuid -> Objects.requireNonNull(Bukkit.getPlayer(uuid)).sendMessage(String.format("Приєднався гравець %s (%d/%d)", player.getDisplayName(), arena.getPlayers().size(), arena.getMinPlayers())));
+									if (arena.getPlayers().size() == arena.getMinPlayers()){
+										startCounter(arena);
+									}
+								} else {
+									player.sendMessage("Арена вже немає місць!");
+								}
+							})
+					);
+					slot.getAndIncrement();
+				});
 	}
 
 	public void addLobbyItems(Player player){

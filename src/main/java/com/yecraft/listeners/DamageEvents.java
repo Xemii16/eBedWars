@@ -99,7 +99,7 @@ public class DamageEvents implements Listener{
 			player.teleport(arena.getGame().getDeathSpawn());
 			player.setGameMode(GameMode.SPECTATOR);
 			new Thread(() -> {
-				DeathRunnable runnable = new DeathRunnable(player, 5, arena.getGame().getDeathSpawn());
+				DeathRunnable runnable = new DeathRunnable(player, 5, arena.getGame().getDeathSpawn(), arena);
 				runnable.runTaskTimer(BedWars.getInstance(), 0L, 20L);
 			}).start();
 		}
@@ -180,7 +180,7 @@ public class DamageEvents implements Listener{
 					player.teleport(game.getDeathSpawn());
 					player.setGameMode(GameMode.SPECTATOR);
 					new Thread(() -> {
-						DeathRunnable runnable = new DeathRunnable(player, 5, game.getDeathSpawn());
+						DeathRunnable runnable = new DeathRunnable(player, 5, game.getDeathSpawn(), arena);
 						runnable.runTaskTimer(BedWars.getInstance(), 0L, 20L);
 					}).start();
 				}
@@ -201,7 +201,7 @@ public class DamageEvents implements Listener{
 				player.teleport(game.getDeathSpawn());
 				player.setGameMode(GameMode.SPECTATOR);
 				new Thread(() -> {
-					DeathRunnable runnable = new DeathRunnable(player, 5, game.getDeathSpawn());
+					DeathRunnable runnable = new DeathRunnable(player, 5, game.getDeathSpawn(), arena);
 					runnable.runTaskTimer(BedWars.getInstance(), 0L, 20L);
 				}).start();
 			} else return;

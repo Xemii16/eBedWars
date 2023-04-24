@@ -1,18 +1,22 @@
 package com.yecraft.engine;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.yecraft.scheduler.DeathRunnable;
+import com.yecraft.scheduler.DropResourcesRunnable;
 import com.yecraft.world.LocalGameMap;
 
 import org.bukkit.Location;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Game implements Serializable{
+  private List<? extends BukkitRunnable> deathTasks;
+  private Map <String, DropResourcesRunnable> dropTasks;
   private Map<String, Team> teams;
   private long bronzeCD;
   private long ironCD;
@@ -38,7 +42,7 @@ public class Game implements Serializable{
     this.diamondCD = diamondCD;
     this.lapisCD = lapisCD;
     this.gameStatus = gameStatus;
-    this.mapName = "";
+    this.mapName = "Template";
     this.map = map;
     this.bronze = bronze;
     this.iron = iron;
@@ -47,6 +51,8 @@ public class Game implements Serializable{
     this.lapis = lapis;
     this.npc = npc;
     this.deathSpawn = deathSpawn;
+    this.deathTasks = new ArrayList<DeathRunnable>();
+    this.dropTasks = new HashMap<>();
   }
 
   public void addBronze(Location location){
@@ -71,6 +77,14 @@ public class Game implements Serializable{
 
   public String getMapName() {
     return mapName;
+  }
+
+  public List<? extends BukkitRunnable> getDeathTasks() {
+    return deathTasks;
+  }
+
+  public Map<String, DropResourcesRunnable> getDropTasks() {
+    return dropTasks;
   }
 
   public void setMapName(String mapName) {

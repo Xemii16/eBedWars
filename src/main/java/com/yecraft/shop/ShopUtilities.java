@@ -44,26 +44,26 @@ public class ShopUtilities {
 				case BRONZE:
 					this.material = Material.BRICK;
 					this.name = "бронзи";
-					this.color = ChatColor.of("996633");
+					this.color = ChatColor.of("#996633");
 					break;
 				case IRON:
 					this.material = Material.IRON_INGOT;
 					this.name = "заліза";
-					this.color = ChatColor.of("669999");
+					this.color = ChatColor.of("#669999");
 					break;
 				case GOLD:
 				this.material = Material.GOLD_INGOT;
 				this.name = "золота";
-				this.color = ChatColor.of("ffff66");
+				this.color = ChatColor.of("#ffff66");
 				break;
 				case DIAMOND:
 					this.material = Material.DIAMOND;
-					this.color = ChatColor.of("66ffff");
+					this.color = ChatColor.of("#66ffff");
 					this.name = "діамантів";
 					break;
 				case LAPIS:
 					this.material = Material.LAPIS_LAZULI;
-					this.color = ChatColor.of("0066ff");
+					this.color = ChatColor.of("#0066ff");
 					this.name = "лазуриту";
 					break;
 			}

@@ -1,8 +1,7 @@
 package com.yecraft.scheduler;
 
+import java.io.Serializable;
 import java.util.List;
-
-import com.yecraft.engine.Game;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,11 +12,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class SpawnRunnable extends BukkitRunnable{
+public class DropResourcesRunnable extends BukkitRunnable implements Serializable {
 	
 	private final World world;
 	private final List<Location> locations;
 	private final Material material;
+	private final long time;
 
 	@Override
 	public void run() {
@@ -25,5 +25,8 @@ public class SpawnRunnable extends BukkitRunnable{
 			world.dropItem(location, new ItemStack(material));
 		}
 	}
-	
+
+	public long getTime() {
+		return time;
+	}
 }
