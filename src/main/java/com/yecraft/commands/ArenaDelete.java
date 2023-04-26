@@ -8,6 +8,9 @@ public class ArenaDelete implements SubCommand{
 
 	@Override
 	public void init(String[] args, Player player) {
+		if (!EngineCommands.COMMANDS.contains(this)){
+			EngineCommands.COMMANDS.add(this);
+		}
 		if (!(args[0].equalsIgnoreCase("delete"))) return;
 		if (Arena.ARENA_MAP.containsKey(args[1])){
 			Arena.ARENA_MAP.remove(args[1]);

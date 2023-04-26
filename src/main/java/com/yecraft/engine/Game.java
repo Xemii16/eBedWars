@@ -15,6 +15,8 @@ import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Game implements Serializable{
+
+  private List<Location> breakingBlocks;
   private List<? extends BukkitRunnable> deathTasks;
   private Map <String, DropResourcesRunnable> dropTasks;
   private Map<String, Team> teams;
@@ -74,6 +76,18 @@ public class Game implements Serializable{
     this.teams.put(name, team);
   }
 
+
+  public List<Location> getBreakingBlocks() {
+    return breakingBlocks;
+  }
+
+  public void setBreakingBlocks(List<Location> breakingBlocks) {
+    this.breakingBlocks = breakingBlocks;
+  }
+
+  public void addBreakingBlock(Location location){
+    this.breakingBlocks.add(location);
+  }
 
   public String getMapName() {
     return mapName;

@@ -7,19 +7,19 @@ import org.bukkit.entity.Player;
 
 import com.yecraft.commands.TeamSet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TeamCommands implements CommandExecutor{
+
+	public static List<SubCommand> COMMANDS = new ArrayList<>();
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (sender instanceof Player){
 			Player player = (Player) sender;
 			if (player.isOp()){
-				TeamCreate teamCreate = new TeamCreate();
-				teamCreate.init(args, player);
-				TeamDelete teamDelete = new TeamDelete();
-				teamDelete.init(args, player);
-				TeamSet teamSet = new TeamSet();
-				teamSet.init(args, player);
+				COMMANDS.forEach(subCommand -> subCommand.init(args, player));
 			}
 		}
 		return true;

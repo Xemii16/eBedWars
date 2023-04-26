@@ -7,6 +7,7 @@ F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\shop\BowShop.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\commands\OpenShop.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\world\FileUtils.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\inventory\TeamInventory.java
+F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\scheduler\DropResourcesRunnable.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\listeners\PlayerInteractEvents.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\completers\ArenaTabCompleter.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\engine\Game.java
@@ -15,6 +16,7 @@ F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\listeners\PortalEvents.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\shop\FoodShop.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\shop\ShopUtilities.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\shop\ToolsShop.java
+F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\scheduler\TimerBossBar.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\event\GameChangeStatusEvent.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\shop\SwordShop.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\shop\PotionShop.java
@@ -48,5 +50,4 @@ F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\scheduler\DeathRunnable.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\listeners\CommandSendEvents.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\database\Database.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\commands\TeamCreate.java
-F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\scheduler\SpawnRunnable.java
 F:\Maks\eCraft\BedWars\src\main\java\com\yecraft\shop\MainShop.java

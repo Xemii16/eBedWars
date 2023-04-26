@@ -1,11 +1,13 @@
 package com.yecraft.listeners;
 
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
 import com.yecraft.bedwars.BedWars;
 import com.yecraft.engine.Arena;
+import com.yecraft.engine.ArenaUtilities;
 import com.yecraft.engine.Team;
 
 import net.md_5.bungee.api.ChatMessageType;
@@ -13,6 +15,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -43,34 +46,35 @@ public class BedBreakEvents implements Listener{
 
 	@EventHandler
 	public void breakBed(BlockBreakEvent e) {
+		Block block = e.getBlock();
 		Player player = e.getPlayer();
-		Material blockMaterial = e.getBlock().getType();
-		PersistentDataContainer playerData = player.getPersistentDataContainer();
-		NamespacedKey arenaKey = new NamespacedKey(BedWars.getInstance(), "arena");
-		NamespacedKey teamKey = new NamespacedKey(BedWars.getInstance(), "team");
-		NamespacedKey bedKey = new NamespacedKey(BedWars.getInstance(), "bed");
-		if (!(playerData.has(arenaKey, PersistentDataType.STRING))) return;
-		Arena arena = Arena.ARENA_MAP.get(playerData.get(arenaKey, PersistentDataType.STRING));
-		if (!(playerData.has(teamKey, PersistentDataType.STRING))) return;
-		Team team = arena.getGame().getTeams().get(playerData.get(teamKey, PersistentDataType.STRING));
-		if (blockMaterial.equals(team.getBed())){
-			e.setCancelled(true);
-			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("Ви не можете зламати своє ліжко!"));
-		} else {
-			if (BEDS.contains(blockMaterial)){
-				e.setDropItems(false);
-				for (Team teams : arena.getGame().getTeams().values()){
-					if (blockMaterial.equals(teams.getBed())){
-						for (UUID uuid : teams.getPlayers()){
-							Player teamPlayer = Bukkit.getPlayer(uuid);
-							teamPlayer.getPersistentDataContainer().set(bedKey, PersistentDataType.STRING, "false");
-						}
-						for (UUID uuid : arena.getPlayers()){
-							Player arenaPlayer = Bukkit.getPlayer(uuid);
-							arenaPlayer.sendMessage(String.format("Ліжко команди %s зламано гравцем %s", team.getLocalName(), player.getDisplayName()));
-						}
-					}
-				}
+		Arena arena = ArenaUtilities.getPlayerArena(player);
+		if (BEDS.contains(block.getType())){
+			if (arena == null) return;
+			Team team = ArenaUtilities.getPlayerTeam(arena, player);
+			if (team != null){
+				if (!team.getBed().equals(block.getType())) return;
+				player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("Ви не можете зламати своє ліжко"));
+				e.setCancelled(true);
+				return;
+			}
+			Team team1 = ArenaUtilities.getTeamByMaterial(arena, block.getType());
+			if (team1 != null){
+				team1.setRespawnable(false);
+				team1.getPlayers().stream()
+						.map(Bukkit::getPlayer)
+						.filter(Objects::nonNull)
+						.forEach(player1 -> {
+							player1.sendTitle("Ваше ліжко знищене!", "Зламав гравець " + player.getDisplayName(), 10, 20, 10);
+							return;
+						});
+			}
+		}
+		if (arena != null){
+			if (ArenaUtilities.ifBlockCanBreak(arena, block)){
+				arena.getGame().getBreakingBlocks().remove(block.getLocation());
+			} else {
+				e.setCancelled(true);
 			}
 		}
 	}

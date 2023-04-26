@@ -17,6 +17,9 @@ public class ArenaCreate implements SubCommand{
 
 	@Override
 	public void init(String[] args, Player player) {
+		if (!EngineCommands.COMMANDS.contains(this)){
+			EngineCommands.COMMANDS.add(this);
+		}
 		if (args[0].equalsIgnoreCase("create") & args.length == 2){
 			String name = args[1];
 			if (!Arena.ARENA_MAP.containsKey(name)){

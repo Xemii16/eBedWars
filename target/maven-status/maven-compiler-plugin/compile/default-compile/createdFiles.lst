@@ -1,6 +1,8 @@
 com\yecraft\commands\TeamDelete.class
+com\yecraft\scheduler\TimerBossBar.class
 com\yecraft\shop\MainShop.class
 com\yecraft\scoreboard\Scoreboard.class
+com\yecraft\scheduler\DropResourcesRunnable.class
 com\yecraft\shop\SwordShop.class
 com\yecraft\shop\BowShop.class
 com\yecraft\shop\UpgradeShop.class
@@ -12,7 +14,6 @@ com\yecraft\listeners\ServerLeaveEvents.class
 com\yecraft\listeners\PortalEvents.class
 com\yecraft\engine\Game.class
 com\yecraft\listeners\BedBreakEvents.class
-com\yecraft\scheduler\SpawnRunnable.class
 com\yecraft\commands\ArenaTeleport.class
 com\yecraft\commands\TeamSet.class
 com\yecraft\commands\TeamCommands.class
@@ -30,6 +31,7 @@ com\yecraft\engine\Team.class
 com\yecraft\event\GameChangeStatusEvent.class
 com\yecraft\commands\ArenaDelete.class
 com\yecraft\inventory\JoinInventory$1.class
+com\yecraft\scheduler\TimerBossBar$1.class
 com\yecraft\listeners\GameStatusEvents$1.class
 com\yecraft\commands\TeamCreate.class
 com\yecraft\inventory\JoinInventory.class

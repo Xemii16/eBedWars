@@ -49,6 +49,7 @@ public class JoinInventory extends Gui{
 									arena.getPlayers().add(player.getUniqueId());
 									player.getPersistentDataContainer().set(new NamespacedKey(BedWars.getInstance(), "arena"), PersistentDataType.STRING, arena.getName());
 									arena.getLastPlayerLocation().put(player.getUniqueId(), player.getLocation());
+									Arena.UUID_ARENA.put(player.getUniqueId(), arena.getName());
 									arena.getPlayers().forEach(uuid -> Objects.requireNonNull(Bukkit.getPlayer(uuid)).sendMessage(String.format("Приєднався гравець %s (%d/%d)", player.getDisplayName(), arena.getPlayers().size(), arena.getMinPlayers())));
 									if (arena.getPlayers().size() == arena.getMinPlayers()){
 										startCounter(arena);

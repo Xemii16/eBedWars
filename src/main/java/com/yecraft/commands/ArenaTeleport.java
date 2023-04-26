@@ -12,6 +12,9 @@ public class ArenaTeleport implements SubCommand{
 
 	@Override
 	public void init(String[] args, Player player) {
+		if (!EngineCommands.COMMANDS.contains(this)){
+			EngineCommands.COMMANDS.add(this);
+		}
 		if (args[0].equalsIgnoreCase("teleport")){
 			Arena arena;
 			if (Arena.ARENA_MAP.containsKey(args[1])){

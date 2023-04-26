@@ -14,6 +14,9 @@ public class ArenaSet implements SubCommand{
 
 	@Override
 	public void init(String[] args, Player player) {
+		if (!EngineCommands.COMMANDS.contains(this)){
+			EngineCommands.COMMANDS.add(this);
+		}
 		if (args[0].equalsIgnoreCase("set")){
 			if (!(args.length == 4)) return;
 			Arena arena = null;

@@ -22,5 +22,8 @@ public class PlayerInteractEvents implements Listener{
 		if (e.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(JoinInventory.TEAM_CHOOSER)){
 			new TeamInventory(player).open();
 		}
+		if (e.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(JoinInventory.LEAVE_BUTTON)){
+
+		}
 	}
 }
