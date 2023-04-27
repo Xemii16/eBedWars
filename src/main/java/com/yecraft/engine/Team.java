@@ -1,9 +1,7 @@
 package com.yecraft.engine;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,7 +12,7 @@ public class Team implements Serializable {
 	private String color;
 	private Material bed;
 	private Material wool;
-	private Set<UUID> players;
+	private List<UUID> players;
 	private Location spawn;
 	private boolean isRespawnable;
 
@@ -24,7 +22,7 @@ public class Team implements Serializable {
 		this.localName = localName;
 		this.color = "#ffffff";
 		this.bed = Material.WHITE_BED;
-		this.players = new HashSet<UUID>();
+		this.players = new ArrayList<>();
 		this.spawn = null;
 		this.isRespawnable = true;
 		this.wool = Material.WHITE_WOOL;
@@ -80,11 +78,11 @@ public class Team implements Serializable {
 		this.wool = wool;
 	}
 
-	public Set<UUID> getPlayers() {
+	public List<UUID> getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(Set<UUID> players) {
+	public void setPlayers(List<UUID> players) {
 		this.players = players;
 	}
 

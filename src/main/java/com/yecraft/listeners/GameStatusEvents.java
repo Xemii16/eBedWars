@@ -154,7 +154,7 @@ public class GameStatusEvents implements Listener {
 					arena.getLastPlayerLocation().remove(uuid);
 				}
 				for (Team team : game.getTeams().values()) {
-					team.setPlayers(new HashSet<>());
+					team.setPlayers(new ArrayList<>());
 				}
 				arena.setStatus(false);
 				game.getMap().restoreFromSource();

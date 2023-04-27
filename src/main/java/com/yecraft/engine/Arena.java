@@ -24,7 +24,7 @@ public class Arena implements Serializable {
     private Boolean status;
     private LocalGameMap map;
     private transient BossBar bossBar;
-    private Set<UUID> players;
+    private List<UUID> players;
     private Map<UUID, Location> lastPlayerLocation;
 
     private Location spawn;
@@ -39,7 +39,7 @@ public class Arena implements Serializable {
         this.status = status;
         this.map = map;
         this.bossBar = Bukkit.createBossBar("Очікування гравців", BarColor.BLUE, BarStyle.SOLID);
-        this.players = new HashSet<>();
+        this.players = new ArrayList<>();
         this.lastPlayerLocation = new HashMap<UUID, Location>();
         this.spawn = spawn;
     }
@@ -109,11 +109,11 @@ public class Arena implements Serializable {
         this.bossBar = bossBar;
     }
 
-    public Set<UUID> getPlayers() {
+    public List<UUID> getPlayers() {
         return players;
     }
 
-    public void setPlayers(Set<UUID> players) {
+    public void setPlayers(List<UUID> players) {
         this.players = players;
     }
 

@@ -1,23 +1,18 @@
 package com.yecraft.engine;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.yecraft.scheduler.DeathRunnable;
 import com.yecraft.scheduler.DropResourcesRunnable;
 import com.yecraft.world.LocalGameMap;
 
 import org.bukkit.Location;
 
-import org.bukkit.scheduler.BukkitRunnable;
-
 public class Game implements Serializable{
 
   private List<Location> breakingBlocks;
-  private List<? extends BukkitRunnable> deathTasks;
   private Map <String, DropResourcesRunnable> dropTasks;
   private Map<String, Team> teams;
   private long bronzeCD;
@@ -53,7 +48,6 @@ public class Game implements Serializable{
     this.lapis = lapis;
     this.npc = npc;
     this.deathSpawn = deathSpawn;
-    this.deathTasks = new ArrayList<DeathRunnable>();
     this.dropTasks = new HashMap<>();
   }
 
@@ -93,9 +87,6 @@ public class Game implements Serializable{
     return mapName;
   }
 
-  public List<? extends BukkitRunnable> getDeathTasks() {
-    return deathTasks;
-  }
 
   public Map<String, DropResourcesRunnable> getDropTasks() {
     return dropTasks;

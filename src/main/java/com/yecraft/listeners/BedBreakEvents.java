@@ -8,6 +8,7 @@ import java.util.UUID;
 import com.yecraft.bedwars.BedWars;
 import com.yecraft.engine.Arena;
 import com.yecraft.engine.ArenaUtilities;
+import com.yecraft.engine.GameStatus;
 import com.yecraft.engine.Team;
 
 import net.md_5.bungee.api.ChatMessageType;
@@ -51,6 +52,7 @@ public class BedBreakEvents implements Listener{
 		Arena arena = ArenaUtilities.getPlayerArena(player);
 		if (BEDS.contains(block.getType())){
 			if (arena == null) return;
+			if (!(ArenaUtilities.getGameStatusByArena(arena).equals(GameStatus.ACTIVE))) return;
 			Team team = ArenaUtilities.getPlayerTeam(arena, player);
 			if (team != null){
 				if (!team.getBed().equals(block.getType())) return;
@@ -61,16 +63,17 @@ public class BedBreakEvents implements Listener{
 			Team team1 = ArenaUtilities.getTeamByMaterial(arena, block.getType());
 			if (team1 != null){
 				team1.setRespawnable(false);
+				e.setDropItems(false);
 				team1.getPlayers().stream()
 						.map(Bukkit::getPlayer)
 						.filter(Objects::nonNull)
 						.forEach(player1 -> {
 							player1.sendTitle("Ваше ліжко знищене!", "Зламав гравець " + player.getDisplayName(), 10, 20, 10);
-							return;
 						});
 			}
 		}
 		if (arena != null){
+			if (!(ArenaUtilities.getGameStatusByArena(arena).equals(GameStatus.ACTIVE))) return;
 			if (ArenaUtilities.ifBlockCanBreak(arena, block)){
 				arena.getGame().getBreakingBlocks().remove(block.getLocation());
 			} else {
