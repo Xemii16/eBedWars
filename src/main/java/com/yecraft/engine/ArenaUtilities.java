@@ -18,7 +18,28 @@ import static com.yecraft.engine.Arena.UUID_ARENA;
 
 public class ArenaUtilities {
 
+    public static void addPlayerToFreeTeam(Arena arena, Player player){
+        arena.getGame().getTeams().values().stream()
+                .filter(team -> team.getPlayers().size() < arena.getPlayersOnTeam())
+                .forEach(team -> {
+                    if (team.getPlayers().size() < arena.getPlayersOnTeam()){
+                        team.getPlayers().add(player.getUniqueId());
+                    }
+                });
+    }
 
+    public static boolean ifPlayerInTeam (Arena arena, Player player){
+        for (Team team : arena.getGame().getTeams().values()){
+            if (team.getPlayers().contains(player.getUniqueId())) return true;
+        }
+        return false;
+    }
+    public static void addPlayerToTeam(Team team, Player player){
+        Arena arena = ArenaUtilities.getPlayerArena(player);
+        if (arena == null) return;
+        team.getPlayers().add(player.getUniqueId());
+        player.sendMessage("Ви приєднані до команди " + team.getDisplayName());
+    }
     public static void respawnPlayerOrDoSpectator(Arena arena, Team team, Player player){
         if (team.isRespawnable()){
             player.setHealth(20);
@@ -26,15 +47,21 @@ public class ArenaUtilities {
             AtomicInteger time = new AtomicInteger(5);
             new Thread(() -> {
                 DeathRunnable runnable = new DeathRunnable(arena, player, time.get(), arena.getGame().getDeathSpawn());
-                runnable.runTask(BedWars.getInstance());
-                time.getAndDecrement();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    System.out.println("ArenaUtilities respawn player error");
+                boolean bool = true;
+                while (bool){
+                    if (time.get() == 0){
+                        bool = false;
+                    }
+                    runnable.run();
+                    time.getAndDecrement();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        System.out.println("ArenaUtilities respawn player error");
+                    }
                 }
-            })
+            });
         } else {
             player.setGameMode(GameMode.SPECTATOR);
             removePlayer(arena, player);

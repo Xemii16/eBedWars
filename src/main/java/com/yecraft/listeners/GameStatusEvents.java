@@ -4,13 +4,12 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.yecraft.bedwars.BedWars;
-import com.yecraft.engine.Arena;
-import com.yecraft.engine.Game;
-import com.yecraft.engine.GameStatus;
-import com.yecraft.engine.Team;
+import com.yecraft.engine.*;
 import com.yecraft.event.GameChangeStatusEvent;
+import com.yecraft.scheduler.BossBarRunnable;
 import com.yecraft.scheduler.DropResourcesRunnable;
 
+import com.yecraft.scheduler.SpawnerThread;
 import dev.sergiferry.playernpc.api.NPC;
 import dev.sergiferry.playernpc.api.NPCLib;
 import org.bukkit.*;
@@ -18,9 +17,6 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -34,21 +30,14 @@ public class GameStatusEvents implements Listener {
 			case WAIT:
 				break;
 			case START:
-				for (UUID uuid : arena.getPlayers()) {
-					Player player = Bukkit.getPlayer(uuid);
-					if (!(player.getPersistentDataContainer().getKeys().contains(new NamespacedKey(BedWars.getInstance(), "team")))) {
-						for (Team team : arena.getGame().getTeams().values()) {
-							if (team.getPlayers().size() < arena.getPlayersOnTeam()){
-								team.getPlayers().add(player.getUniqueId());
-								PersistentDataContainer data = player.getPersistentDataContainer();
-								NamespacedKey teamKey = new NamespacedKey(BedWars.getInstance(), "team");
-								NamespacedKey bedKey = new NamespacedKey(BedWars.getInstance(), "bed");
-								data.set(teamKey, PersistentDataType.STRING, team.getLocalName());
-								data.set(bedKey, PersistentDataType.STRING, "true");
+				arena.getPlayers().stream()
+						.map(Bukkit::getPlayer)
+						.filter(Objects::nonNull)
+						.forEach(player -> {
+							if (!ArenaUtilities.ifPlayerInTeam(arena, player)){
+								ArenaUtilities.addPlayerToFreeTeam(arena, player);
 							}
-						}
-					}
-				}
+						});
 				for (Team team : game.getTeams().values()) {
 					for (UUID uuid : team.getPlayers()) {
 						Player player = Bukkit.getPlayer(uuid);
@@ -71,53 +60,19 @@ public class GameStatusEvents implements Listener {
 					npc.setText("Торговець");
 					npc.addRunPlayerCommandClickAction("open");
 				}
-				BukkitRunnable bossRunnable = new BukkitRunnable() {
-					double time = 3600;
-
-					@Override
-					public void run() {
-						if (game.getGameStatus() != GameStatus.ACTIVE) {
-							this.cancel();
-							return;
-						}
-						arena.getBossBar().setTitle(time / 60 + " хв" + time % 60 + " сек");
-						arena.getBossBar().setProgress(time / 3600);
-						time--;
-						if (time == 0){
-							game.setGameStatus(GameStatus.DRAW);
-							Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
-						}
-					}
-				};
-				Map<String, DropResourcesRunnable> dropRunnable = new HashMap<>();
-				dropRunnable.put("bronze", new DropResourcesRunnable(game.getMap().getWorld(), game.getBronze(), Material.BRICK, game.getBronzeCD()));
-				dropRunnable.put("iron", new DropResourcesRunnable(game.getMap().getWorld(), game.getIron(), Material.IRON_INGOT, game.getIronCD()));
-				dropRunnable.put("gold", new DropResourcesRunnable(game.getMap().getWorld(), game.getGold(), Material.GOLD_INGOT, game.getGoldCD()));
-				dropRunnable.put("diamond", new DropResourcesRunnable(game.getMap().getWorld(), game.getDiamond(), Material.DIAMOND, game.getDiamondCD()));
-				dropRunnable.put("lapis", new DropResourcesRunnable(game.getMap().getWorld(), game.getLapis(), Material.LAPIS_LAZULI, game.getLapisCD()));
-				game.getDropTasks().putAll(dropRunnable);
 				arena.getBossBar().setColor(BarColor.GREEN);
-
-
-				game.getDropTasks().values().stream()
-						.forEach(runnable -> new Thread(() -> {
-							boolean bool = true;
-							while (bool){
-								runnable.runTask(BedWars.getInstance());
-								if (game.getGameStatus() != GameStatus.ACTIVE) bool = false;
-								try {
-									Thread.sleep(runnable.getTime());
-								} catch (InterruptedException ex) {
-									ex.printStackTrace();
-									System.out.println("Drop item error");
-								}
-							}
-						}));
-				new Thread (() -> {
+				new DropResourcesRunnable(game.getMap().getWorld(), game.getBronze(), Material.BRICK, game.getBronzeCD()).runTaskTimer(BedWars.getInstance(), 0, game.getBronzeCD());
+				new DropResourcesRunnable(game.getMap().getWorld(), game.getIron(), Material.IRON_INGOT, game.getIronCD()).runTaskTimer(BedWars.getInstance(), 0, game.getIronCD());
+				new DropResourcesRunnable(game.getMap().getWorld(), game.getGold(), Material.GOLD_INGOT, game.getGoldCD()).runTaskTimer(BedWars.getInstance(), 0, game.getGoldCD());
+				new DropResourcesRunnable(game.getMap().getWorld(), game.getDiamond(), Material.DIAMOND, game.getDiamondCD()).runTaskTimer(BedWars.getInstance(), 0, game.getDiamondCD());
+				new DropResourcesRunnable(game.getMap().getWorld(), game.getLapis(), Material.LAPIS_LAZULI, game.getLapisCD()).runTaskTimer(BedWars.getInstance(), 0, game.getLapisCD());
+				new Thread(() -> {
 					boolean bool = true;
+					int time = 3600;
 					while (bool){
-						bossRunnable.runTask(BedWars.getInstance());
+						new BossBarRunnable(arena, time).run();
 						if (game.getGameStatus() != GameStatus.ACTIVE) bool = false;
+						time--;
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException ex) {
@@ -135,7 +90,7 @@ public class GameStatusEvents implements Listener {
 					if (!(team.getPlayers().isEmpty())) {
 						for (UUID uuid : arena.getPlayers()) {
 							Player player = Bukkit.getPlayer(uuid);
-							player.sendMessage("Перемогла команда " + ChatColor.of(team.getColor()) + "" + team.getLocalName());
+							player.sendMessage("Перемогла команда " + ChatColor.of(team.getColor()) + team.getLocalName());
 						}
 						for (UUID uuid : team.getPlayers()) {
 							team.getPlayers().remove(uuid);

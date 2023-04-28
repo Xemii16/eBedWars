@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.yecraft.engine.ArenaUtilities;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -27,9 +28,12 @@ public class BlocksShop extends Gui{
 	
 	@Override
 	public void onOpen(InventoryOpenEvent inventory){
+		Arena arena = ArenaUtilities.getPlayerArena(player);
+		if (arena == null) return;
+		Team team = ArenaUtilities.getPlayerTeam(arena, player);
+		if (team == null) return;
 		allShopIcons();
 		fillRow(new Icon(Material.ORANGE_STAINED_GLASS_PANE), 2);
-		Team team = Arena.ARENA_MAP.get(inventory.getPlayer().getPersistentDataContainer().get(new NamespacedKey(BedWars.getInstance(), "arena"), PersistentDataType.STRING)).getGame().getTeams().get(inventory.getPlayer().getPersistentDataContainer().get(new NamespacedKey(BedWars.getInstance(), "team"), PersistentDataType.STRING));
 		Icon icon1 = new Icon(team.getWool()).setAmount(3);
 		Icon icon2 = new Icon(Material.SANDSTONE).setAmount(2);
 		Icon icon3 = new Icon(Material.END_STONE);
@@ -48,7 +52,6 @@ public class BlocksShop extends Gui{
 	
 	public void allShopIcons(){
 		fillRow(new Icon(Material.ORANGE_STAINED_GLASS_PANE).setName(""), 2);
-		fillRow(new Icon(Material.ORANGE_STAINED_GLASS_PANE).setName(""), 1);
 		List<Icon> icons = List.of(
 				new Icon(Material.SANDSTONE).setName("Блоки").onClick(e -> {
 					new BlocksShop((Player) e.getWhoClicked()).open();

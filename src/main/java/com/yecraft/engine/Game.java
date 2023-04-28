@@ -1,6 +1,7 @@
 package com.yecraft.engine;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,7 @@ public class Game implements Serializable{
     this.npc = npc;
     this.deathSpawn = deathSpawn;
     this.dropTasks = new HashMap<>();
+    this.breakingBlocks = new ArrayList<>();
   }
 
   public void addBronze(Location location){

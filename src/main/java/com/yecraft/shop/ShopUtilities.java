@@ -27,6 +27,7 @@ public class ShopUtilities {
 				if(!(player.getInventory().contains(new ItemStack(price.getMaterial()), price.getPrice()))) return;
 				player.getInventory().remove(new ItemStack(price.getMaterial(), price.getPrice()));
 				player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_SAPLING_PLACE, 1.0f, 1.0f);
+				player.getInventory().addItem(click.getCurrentItem());
 			}
 		});
 	}

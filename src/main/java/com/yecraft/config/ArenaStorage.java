@@ -118,12 +118,8 @@ public class ArenaStorage {
 						team.getSpawn().setWorld(null);
 					}
 				}
-				if (arena.getGame().getMap().getWorld() != null){
-					arena.getGame().getMap().unload();
-				}
-				if (arena.getMap().getWorld() != null){
-					arena.getMap().unload();
-				}
+				arena.getMap().unload();
+				arena.getGame().getMap().unload();
 				FileOutputStream fileOutputStream = new FileOutputStream(arenasFolder + File.separator + arena.getName());
 				BukkitObjectOutputStream objectOutputStream = new BukkitObjectOutputStream(fileOutputStream);
 				objectOutputStream.writeObject(arena);

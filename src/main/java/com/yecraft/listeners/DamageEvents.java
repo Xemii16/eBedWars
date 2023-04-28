@@ -39,6 +39,7 @@ public class DamageEvents implements Listener{
 		if (e.getCause() == EntityDamageEvent.DamageCause.VOID){
 			if (e.getEntity() instanceof Player){
 				Player player = (Player) e.getEntity();
+				if (player.getHealth() > 0) return;
 				Arena arena = ArenaUtilities.getPlayerArena(player);
 				if (arena == null) return;
 				Team team = ArenaUtilities.getPlayerTeam(arena, player);

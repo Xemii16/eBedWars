@@ -8,9 +8,6 @@ public class TeamDelete implements SubCommand{
 
 	@Override
 	public void init(String[] args, Player player) {
-		if (!EngineCommands.COMMANDS.contains(this)){
-			EngineCommands.COMMANDS.add(this);
-		}
 		if (!(args.length == 3)) return;
 		Arena arena = null;
 		if (Arena.ARENA_MAP.containsKey(args[1])){

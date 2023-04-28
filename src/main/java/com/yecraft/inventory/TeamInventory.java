@@ -3,6 +3,7 @@ package com.yecraft.inventory;
 import com.yecraft.bedwars.BedWars;
 import com.yecraft.engine.Arena;
 
+import com.yecraft.engine.ArenaUtilities;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -21,33 +22,15 @@ public class TeamInventory extends Gui {
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
-        PersistentDataContainer data = event.getPlayer().getPersistentDataContainer();
-        NamespacedKey arenaKey = new NamespacedKey(BedWars.getInstance(), "arena");
-        NamespacedKey teamKey = new NamespacedKey(BedWars.getInstance(), "team");
-        NamespacedKey bedKey = new NamespacedKey(BedWars.getInstance(), "bed");
-        Arena arena = Arena.ARENA_MAP.get(data.get(arenaKey, PersistentDataType.STRING));
-        arena.getGame().getTeams().values().stream()
+        Arena arena = ArenaUtilities.getPlayerArena((Player) event.getPlayer());
+        if (arena == null) return;
+        arena.getGame().getTeams().values()
                 .forEach(team -> {
                     Icon icon = new Icon(team.getWool())
-                            .onClick(e -> {
-                                checkerIfPlayerInTeam(arena, player);
-                                team.getPlayers().add(player.getUniqueId());
-                                player.getPersistentDataContainer().set(teamKey, PersistentDataType.STRING, team.getLocalName());
-                                player.getPersistentDataContainer().set(bedKey, PersistentDataType.STRING, "true");
-                                player.setDisplayName(ChatColor.of(team.getColor()) + ChatColor.stripColor(player.getDisplayName()));
-                                player.sendMessage("Ви обрали команду " + ChatColor.of(team.getColor()) + team.getDisplayName());
-                            });
+                            .onClick(e -> ArenaUtilities.addPlayerToTeam(team, (Player) e.getWhoClicked()));
                     addItem(team.getSlot(), icon);
                 });
     }
 
-    public void checkerIfPlayerInTeam(Arena arena, Player player) {
-        PersistentDataContainer data = player.getPersistentDataContainer();
-        NamespacedKey teamKey = new NamespacedKey(BedWars.getInstance(), "team");
-        if (!(data.has(teamKey, PersistentDataType.STRING))) return;
-        arena.getGame().getTeams().get(data.get(teamKey, PersistentDataType.STRING))
-                .getPlayers().remove(player.getUniqueId());
-        data.remove(teamKey);
-    }
 
 }
