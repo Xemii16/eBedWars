@@ -26,11 +26,11 @@ public class Arena implements Serializable {
     private transient BossBar bossBar;
     private List<UUID> players;
     private Map<UUID, Location> lastPlayerLocation;
-
+    private int maxPlayers;
     private Location spawn;
 
 
-    public Arena (String name, Integer playersOnTeam, Integer minPlayers, Integer numberTeams, Game game, boolean status, LocalGameMap map, Location spawn){
+    public Arena (String name, Integer playersOnTeam, Integer minPlayers, Integer numberTeams, Game game, boolean status, LocalGameMap map, Location spawn, int maxPlayers){
         this.name = name;
         this.playersOnTeam = playersOnTeam;
         this.minPlayers = minPlayers;
@@ -42,8 +42,16 @@ public class Arena implements Serializable {
         this.players = new ArrayList<>();
         this.lastPlayerLocation = new HashMap<UUID, Location>();
         this.spawn = spawn;
+        this.maxPlayers = maxPlayers;
     }
 
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
 
     public Location getSpawn() {
         return spawn;

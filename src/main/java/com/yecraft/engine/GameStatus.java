@@ -9,5 +9,6 @@ public enum GameStatus implements Serializable {
 	ACTIVE,
 	WIN,
 	RESTART,
-	DRAW
+	DRAW,
+	TUNING
 }

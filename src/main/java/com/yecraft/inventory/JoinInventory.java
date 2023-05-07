@@ -2,6 +2,7 @@ package com.yecraft.inventory;
 
 import com.yecraft.bedwars.BedWars;
 import com.yecraft.engine.Arena;
+import com.yecraft.engine.ArenaUtilities;
 import com.yecraft.engine.GameStatus;
 import com.yecraft.event.GameChangeStatusEvent;
 
@@ -43,17 +44,8 @@ public class JoinInventory extends Gui{
 							.setName(arena.getName())
 							.onClick(e -> {
 								if (arena.getPlayers().size() < arena.getNumberTeams() * arena.getPlayersOnTeam()){
-									e.getWhoClicked().teleport(arena.getSpawn());
-									addLobbyItems((Player) e.getWhoClicked());
-									arena.getBossBar().addPlayer(player);
-									arena.getPlayers().add(player.getUniqueId());
-									player.getPersistentDataContainer().set(new NamespacedKey(BedWars.getInstance(), "arena"), PersistentDataType.STRING, arena.getName());
-									arena.getLastPlayerLocation().put(player.getUniqueId(), player.getLocation());
-									Arena.UUID_ARENA.put(player.getUniqueId(), arena.getName());
-									arena.getPlayers().forEach(uuid -> Objects.requireNonNull(Bukkit.getPlayer(uuid)).sendMessage(String.format("Приєднався гравець %s (%d/%d)", player.getDisplayName(), arena.getPlayers().size(), arena.getMinPlayers())));
-									if (arena.getPlayers().size() == arena.getMinPlayers()){
-										startCounter(arena);
-									}
+									ArenaUtilities.addPlayerArena(arena, player);
+									ArenaUtilities.startTimer(arena);
 								} else {
 									player.sendMessage("Арена вже немає місць!");
 								}

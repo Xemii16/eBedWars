@@ -4,6 +4,7 @@ com\yecraft\shop\MainShop.class
 com\yecraft\scoreboard\Scoreboard.class
 com\yecraft\engine\ArenaUtilities.class
 com\yecraft\scheduler\DropResourcesRunnable.class
+com\yecraft\config\ArenaFileConverter.class
 com\yecraft\listeners\PlayerQuitEvents.class
 com\yecraft\shop\SwordShop.class
 com\yecraft\shop\BowShop.class
@@ -11,6 +12,7 @@ com\yecraft\shop\UpgradeShop.class
 com\yecraft\completers\ArenaTabCompleter.class
 com\yecraft\listeners\GameStatusEvents.class
 com\yecraft\commands\ArenaGet.class
+com\yecraft\engine\ArenaUtilities$1.class
 com\yecraft\listeners\PortalEvents.class
 com\yecraft\inventory\SearchInventory.class
 com\yecraft\engine\Game.class
@@ -43,7 +45,6 @@ com\yecraft\inventory\JoinInventory.class
 com\yecraft\listeners\CraftEvents.class
 com\yecraft\commands\EngineCommands.class
 com\yecraft\listeners\PlayerInteractEvents.class
-com\yecraft\config\ArenaStorage.class
 com\yecraft\engine\GameStatus.class
 com\yecraft\world\GameMap.class
 com\yecraft\commands\JoinCommand.class

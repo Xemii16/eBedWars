@@ -27,6 +27,6 @@ public class DeathRunnable extends BukkitRunnable {
             player.teleport(nextLocation);
             return;
         }
-        player.sendTitle("Відроження через " + time, "", 1, 19, 1);
+        player.sendTitle("Відроження через " + time--, "", 1, 19, 1);
     }
 }

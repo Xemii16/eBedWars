@@ -3,7 +3,7 @@ package com.yecraft.bedwars;
 import com.yecraft.commands.*;
 import com.yecraft.completers.ArenaTabCompleter;
 import com.yecraft.completers.TeamCompleter;
-import com.yecraft.config.ArenaStorage;
+import com.yecraft.config.ArenaFileConverter;
 
 import com.yecraft.engine.Arena;
 import com.yecraft.listeners.*;
@@ -66,38 +66,13 @@ public class BedWars extends JavaPlugin{
 
 		NPCLib.getInstance().registerPlugin(this);
 
-		if (!(new File(getDataFolder().getParentFile() + "/arenas").exists())){
-			new File(getDataFolder().getParentFile() + "/arenas").mkdir();
-		}
-		ArenaStorage.deserialize();
-
-		for (Arena arena : Arena.ARENA_MAP.values()){
-			if (arena.getMap().getWorld() == null){
-				arena.getMap().load();
-			}
-			if(arena.getGame().getMap().getWorld() == null){
-				arena.getGame().getMap().load();
-			}
-		}
+		new ArenaFileConverter().convertFiles();
 	}
 
 	@Override
 	public void onDisable(){
-		if (!(new File(getDataFolder().getParentFile() + "/arenas").exists())){
-			new File(getDataFolder().getParentFile() + "/arenas").mkdir();
-		}
-
-		for (Arena arena : Arena.ARENA_MAP.values()){
-			if (arena.getMap().getWorld() != null){
-				arena.getMap().unload();
-			}
-			if(arena.getGame().getMap().getWorld() != null){
-				arena.getGame().getMap().unload();
-			}
-		}
-		ArenaStorage.serialize();
+		new ArenaFileConverter().conventArenas();
 	}
-
 	public static BedWars getInstance(){
 		return bedWars;
 	}

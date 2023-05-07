@@ -49,9 +49,9 @@ public class GameStatusEvents implements Listener {
 				Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
 				break;
 			case ACTIVE:
-
+				int i = 1;
 				for (Location location : game.getNpc()){
-					NPC.Global npc = NPCLib.getInstance().generateGlobalNPC(BedWars.getInstance(),"trader", location);
+					NPC.Global npc = NPCLib.getInstance().generateGlobalNPC(BedWars.getInstance(),"trader" + i++, location);
 					npc.setSkin(
 							"ewogICJ0aW1lc3RhbXAiIDogMTY4MTIxOTk2MDg0OCwKICAicHJvZmlsZUlkIiA6ICI1NjY3NWIyMjMyZjA0ZWUwODkxNzllOWM5MjA2Y2ZlOCIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaGVJbmRyYSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9iMTdjMzc2YmNlOWJmOTgyNTc4MGM2YjczYjRiMjhiYjM1ZGExN2Y0NjIxY2Y4ZDgxNTZkZDk2ZTVkNzQ5MTMiCiAgICB9CiAgfQp9",
 							"HKqTnqeOavHIr9lVKQLRhWEE4kQTpqpCP2ZTbiINbvH3eaP26H3ya6VFRz4SEqNvbGjJaRA0L/DwbPtTDdqT6O9wcIesGRhRtHx8X2KFejfvEXILCR8rTLIGawQ1Y+L6EhshDYzZHPSmHZJwG3tOwE9Ty/VOooPCgPpO2ctDFfa1moS5dfEHpqbQxiLE604fTrhHiszAa/XfCikkZ/nOEtv2uAnADMU7PxiTf79i3Eu7xMuNJaozdG1GP1NUod56Ve/rxUibdyfWZWlFkHyYwN/NJAhLVutQ/5RFOB5CMvWitlQcaYfOiFXafMIriOHT2hwmGZjkaYPcg9+NUk/q0me/v/A1oEuNQypiAd2IPVpgcPxA2XlQI0UyYXJs4KDuB40ig179+3Ik2WnO78Hq1/99dC8dnJqmijBxpLO3rr0PVM8pwIgyH+7hTkCoVEzWfGZJm3wvkKWfRyVJh2AE+bGuLP2iyjsf/qPfSwDxaLGRc72NlEidF+n5E6nTZCJccAegnTknuVPb+koIEAyAHmg3Aq52NqyK3C327C4x6GQCouZs7tCWAemtV8WDTTzRPaRwzqKJQz4ew8jfvblsG7KhSqcn3vzPtzvgKFupBYbliieoR6pdJLZsGIXdTXaEMJhTSCk6tkSaiGBYQ5ehXdczghO3sCLKmTw7un4lfYk="
@@ -101,21 +101,10 @@ public class GameStatusEvents implements Listener {
 				}
 				break;
 			case RESTART:
-				arena.getBossBar().removeAll();
-				for (UUID uuid : arena.getPlayers()) {
-					Player player = Bukkit.getPlayer(uuid);
-					arena.getPlayers().remove(uuid);
-					player.teleport(arena.getLastPlayerLocation().get(uuid));
-					arena.getLastPlayerLocation().remove(uuid);
-				}
-				for (Team team : game.getTeams().values()) {
-					team.setPlayers(new ArrayList<>());
-				}
-				arena.setStatus(false);
-				game.getMap().restoreFromSource();
-				arena.setStatus(true);
+				ArenaUtilities.restoreWorld(arena);
 				break;
 			case DRAW:
+				ArenaUtilities.restoreWorld(arena);
 		}
 	}
 }

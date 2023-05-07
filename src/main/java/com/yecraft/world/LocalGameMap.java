@@ -14,7 +14,7 @@ public class LocalGameMap implements GameMap, Serializable {
 	private final File sourceWorldFolder;
 	private File activeWorldFolder;
 	
-	private World bukkitWorld;
+	private transient World bukkitWorld;
 	
 	public LocalGameMap(String worldName, boolean loadOnInit){
 		this.sourceWorldFolder = new File(

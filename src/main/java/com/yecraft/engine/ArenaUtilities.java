@@ -1,22 +1,142 @@
 package com.yecraft.engine;
 
 import com.yecraft.bedwars.BedWars;
+import com.yecraft.config.ArenaFileConverter;
+import com.yecraft.event.GameChangeStatusEvent;
 import com.yecraft.items.SpectatorItems;
 import com.yecraft.scheduler.DeathRunnable;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.yecraft.engine.Arena.UUID_ARENA;
 
 public class ArenaUtilities {
+
+    public static void restoreWorld(Arena arena){
+        arena.getPlayers().stream()
+                .map(Bukkit::getPlayer)
+                .filter(Objects::nonNull)
+                .forEach(player -> {
+                    player.getInventory().clear();
+                    player.teleport(arena.getLastPlayerLocation().get(player.getUniqueId()));
+                });
+        arena.setLastPlayerLocation(new HashMap<>());
+        arena.getBossBar().removeAll();
+        setDefaultBossBar(arena);
+        Game game = arena.getGame();
+        game.getTeams().values().stream()
+                        .filter(team -> !team.getPlayers().isEmpty())
+                                .forEach(team -> team.setPlayers(new ArrayList<>()));
+        unloadWorlds(arena);
+        game.getMap().restoreFromSource();
+        loadWorlds(arena);
+        game.setGameStatus(GameStatus.WAIT);
+
+    }
+
+    public static void setDefaultBossBar(Arena arena) {
+        BossBar bar = arena.getBossBar();
+        bar.setColor(BarColor.BLUE);
+        bar.setProgress(1.0);
+        bar.setTitle("Очікування гравців...");
+    }
+
+    public static void loadWorlds(Arena arena){
+        Game game = arena.getGame();
+        Collection<Team> teams = game.getTeams().values();
+        /* getters the world */
+        World world = arena.getMap().getWorld();
+        World world1 = game.getMap().getWorld();
+        /* setting zero world values in arena locations */
+        setWorld(world, arena.getSpawn());
+        /* setting zero world values in game locations */
+        game.getBronze().forEach(bronze -> setWorld(world1, bronze));
+        game.getIron().forEach(iron -> setWorld(world1, iron));
+        game.getGold().forEach(gold -> setWorld(world1, gold));
+        game.getDiamond().forEach(diamond -> setWorld(world1, diamond));
+        game.getLapis().forEach(lapis -> setWorld(world1, lapis));
+
+        game.setBreakingBlocks(new ArrayList<>());
+
+        game.getNpc().forEach(npc -> setWorld(world1, npc));
+        setWorld(world1, game.getDeathSpawn());
+
+        /* setting zero world values in teams locations */
+        teams.forEach(team -> setWorld(world1, team.getSpawn()));
+    }
+
+    public static void unloadWorlds(Arena arena){
+        Game game = arena.getGame();
+        Collection<Team> teams = game.getTeams().values();
+        /* setting zero world values in arena locations */
+        setWorldNull(arena.getSpawn());
+        /* setting zero world values in game locations */
+        game.getBronze().forEach(ArenaUtilities::setWorldNull);
+        game.getIron().forEach(ArenaUtilities::setWorldNull);
+        game.getGold().forEach(ArenaUtilities::setWorldNull);
+        game.getDiamond().forEach(ArenaUtilities::setWorldNull);
+        game.getLapis().forEach(ArenaUtilities::setWorldNull);
+
+        game.setBreakingBlocks(new ArrayList<>());
+
+        game.getNpc().forEach(ArenaUtilities::setWorldNull);
+        setWorldNull(game.getDeathSpawn());
+
+        /* setting zero world values in teams locations */
+        teams.forEach(team -> setWorldNull(team.getSpawn()));
+    }
+    private static void setWorldNull(Location location) {
+        location.setWorld(null);
+    }
+
+    private static void setWorld(World world, Location location) {
+        location.setWorld(world);
+    }
+
+    public static void startTimer(Arena arena){
+        if (arena.getPlayers().size() != arena.getMinPlayers()) return;
+        new BukkitRunnable(){
+            int time = 15;
+            BossBar bossBar = arena.getBossBar();
+            @Override
+            public void run() {
+                if (time == 0){
+                    this.cancel();
+                    arena.getGame().setGameStatus(GameStatus.START);
+                    Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
+                    return;
+                }
+                bossBar.setColor(BarColor.YELLOW);
+                bossBar.setTitle("Початок через " + time);
+                arena.getPlayers().stream()
+                        .map(Bukkit::getPlayer)
+                        .filter(Objects::nonNull)
+                        .forEach(player -> player.playNote(player.getLocation(), Instrument.BIT, Note.natural(1, Note.Tone.A)));
+                time--;
+            }
+        }.runTaskTimer(BedWars.getInstance(), 0, 20);
+    }
+    public static void addPlayerArena(Arena arena, Player player){
+        player.teleport(arena.getSpawn());
+        arena.getPlayers().add(player.getUniqueId());
+        arena.getPlayers().stream()
+                        .map(Bukkit::getPlayer)
+                                .filter(Objects::nonNull)
+                                        .forEach(player1 -> {
+                                            player1.sendMessage(String.format("Приєднався гравець %s (%d/%d)", player.getDisplayName(), arena.getPlayers().size(), arena.getMaxPlayers()));
+                                            player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1, 1);
+                                        });
+        arena.getBossBar().addPlayer(player);
+        UUID_ARENA.put(player.getUniqueId(), arena.getName());
+        arena.getLastPlayerLocation().put(player.getUniqueId(), player.getLocation());
+    }
 
     public static void addPlayerToFreeTeam(Arena arena, Player player){
         arena.getGame().getTeams().values().stream()
@@ -40,29 +160,26 @@ public class ArenaUtilities {
         team.getPlayers().add(player.getUniqueId());
         player.sendMessage("Ви приєднані до команди " + team.getDisplayName());
     }
+
+    public static void gameStopper(Arena arena){
+        Game game = arena.getGame();
+        long liveTeams = game.getTeams().values().stream()
+                .filter(team -> !team.getPlayers().isEmpty())
+                .count();
+        if (liveTeams <= 1){
+            arena.getGame().setGameStatus(GameStatus.WIN);
+            Bukkit.getPluginManager().callEvent(new GameChangeStatusEvent(arena));
+        }
+    }
     public static void respawnPlayerOrDoSpectator(Arena arena, Team team, Player player){
         if (team.isRespawnable()){
             player.setHealth(20);
             player.setFoodLevel(20);
-            AtomicInteger time = new AtomicInteger(5);
-            new Thread(() -> {
-                DeathRunnable runnable = new DeathRunnable(arena, player, time.get(), arena.getGame().getDeathSpawn());
-                boolean bool = true;
-                while (bool){
-                    if (time.get() == 0){
-                        bool = false;
-                    }
-                    runnable.run();
-                    time.getAndDecrement();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        System.out.println("ArenaUtilities respawn player error");
-                    }
-                }
-            });
+            int time = 5;
+            DeathRunnable runnable = new DeathRunnable(arena, player, time, arena.getGame().getDeathSpawn());
+            runnable.runTaskTimer(BedWars.getInstance(), 0, 20);
         } else {
+            gameStopper(arena);
             player.setGameMode(GameMode.SPECTATOR);
             removePlayer(arena, player);
             new SpectatorItems().setItemsInPlayerInventory(player);
